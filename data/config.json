@@ -1,0 +1,19 @@
+{
+  "regras": {
+    "turnos_bloqueio_padrao": 8,
+    "max_eventos_historico": 8
+  },
+  "temas_narrativos": {
+    "hubris": "A Queda do Orgulho",
+    "desespero": "Tempos de Ruína",
+    "intriga": "Sombras na Corte",
+    "fe": "O Julgamento Divino",
+    "guerra": "O Preço do Sangue",
+    "povo": "O Clamor das Ruas",
+    "cultura": "O Renascimento",
+    "natureza": "A Fúria dos Elementos",
+    "ciencia": "A Era da Razão",
+    "crime": "O Submundo",
+    "game_over": "O Fim da Dinastia"
+  }
+}

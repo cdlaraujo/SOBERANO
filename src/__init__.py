@@ -1,0 +1,1 @@
+# Este arquivo permite que o Python trate a pasta 'src' como um pacote.

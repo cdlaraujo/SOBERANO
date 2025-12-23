@@ -1,0 +1,253 @@
+[
+    {
+      "id": "absolutismo",
+      "nome": "Absolutismo Real",
+      "categoria": "autoridade",
+      "desc": "O Estado sou Eu. O Conselho é apenas consultivo.",
+      "tags_semanticas": ["tirano", "centralizador"],
+      "efeito_passivo": {"estabilidade": 3, "militar": 2, "popularidade": -2},
+      "custo_ativacao": {"popularidade": -15},
+      "incompativel_com": ["parlamentarismo", "republica_mercante"]
+    },
+    {
+      "id": "parlamentarismo",
+      "nome": "Carta Magna",
+      "categoria": "autoridade",
+      "desc": "O Rei reina, mas o Parlamento governa.",
+      "tags_semanticas": ["fraco", "diplomata", "democratico"],
+      "efeito_passivo": {"comercio": 5, "estabilidade": -2, "tesouro": -2},
+      "custo_ativacao": {"estabilidade": -20},
+      "incompativel_com": ["absolutismo", "teocracia", "lei_marcial"]
+    },
+    {
+      "id": "lei_marcial",
+      "nome": "Lei Marcial",
+      "categoria": "autoridade",
+      "desc": "Generais administram as províncias. A ordem acima de tudo.",
+      "tags_semanticas": ["espartano", "opressor"],
+      "efeito_passivo": {"estabilidade": 10, "militar": 5, "comercio": -10, "popularidade": -10},
+      "custo_ativacao": {"popularidade": -20},
+      "incompativel_com": ["parlamentarismo", "liberdade_expressao", "habeas_corpus"]
+    },
+    {
+      "id": "teocracia",
+      "nome": "Reino Santo",
+      "categoria": "religiao",
+      "desc": "A Lei de Deus está acima da Lei dos Homens.",
+      "tags_semanticas": ["fanatico", "divino"],
+      "efeito_passivo": {"estabilidade": 5, "comercio": -5},
+      "req_ativacao": ["inquisicao"],
+      "incompativel_com": ["secularismo", "parlamentarismo", "ateismo_estado"]
+    },
+    {
+      "id": "secularismo",
+      "nome": "Estado Laico",
+      "categoria": "religiao",
+      "desc": "A Igreja cuida das almas, o Rei cuida dos corpos.",
+      "tags_semanticas": ["herege", "moderno"],
+      "efeito_passivo": {"comercio": 5, "popularidade": 2},
+      "incompativel_com": ["teocracia", "inquisicao", "guerra_santa"]
+    },
+    {
+      "id": "guerra_santa",
+      "nome": "Cruzada Perpétua",
+      "categoria": "religiao",
+      "desc": "Nossa missão é purificar o mundo pela espada.",
+      "tags_semanticas": ["fanatico", "conquistador"],
+      "efeito_passivo": {"militar": 10, "tesouro": -5, "popularidade": -5},
+      "req_ativacao": ["teocracia"],
+      "incompativel_com": ["secularismo", "diplomacia_aberta"]
+    },
+    {
+      "id": "inquisicao",
+      "nome": "Santo Ofício",
+      "categoria": "justica",
+      "desc": "Tribunais eclesiásticos para caçar dissidentes.",
+      "tags_semanticas": ["cruel", "fanatico"],
+      "efeito_passivo": {"estabilidade": 5, "popularidade": -5},
+      "custo_ativacao": {"tesouro": -10},
+      "incompativel_com": ["secularismo", "liberdade_expressao", "mecenato"]
+    },
+    {
+      "id": "habeas_corpus",
+      "nome": "Habeas Corpus",
+      "categoria": "justica",
+      "desc": "Nenhum homem livre será preso sem julgamento.",
+      "tags_semanticas": ["justo", "democratico"],
+      "efeito_passivo": {"popularidade": 10, "estabilidade": -5},
+      "incompativel_com": ["lei_marcial", "inquisicao", "policia_secreta", "codigo_draconiano"]
+    },
+    {
+      "id": "policia_secreta",
+      "nome": "Rede de Espiões",
+      "categoria": "justica",
+      "desc": "As paredes têm ouvidos. A traição morre no berço.",
+      "tags_semanticas": ["paranoico", "tirano"],
+      "efeito_passivo": {"estabilidade": 15, "tesouro": -5, "popularidade": -10},
+      "incompativel_com": ["habeas_corpus", "liberdade_expressao"]
+    },
+    {
+      "id": "codigo_draconiano",
+      "nome": "Código Draconiano",
+      "categoria": "justica",
+      "desc": "Punições severas para crimes leves. O medo mantém a ordem.",
+      "tags_semanticas": ["cruel", "autoritario"],
+      "efeito_passivo": {"estabilidade": 10, "popularidade": -15, "comercio": -2},
+      "incompativel_com": ["habeas_corpus", "reabilitacao_penal"]
+    },
+    {
+      "id": "servidao",
+      "nome": "Servidão da Gleba",
+      "categoria": "trabalho",
+      "desc": "O camponês pertence à terra onde nasceu.",
+      "tags_semanticas": ["opressor", "tradicional"],
+      "efeito_passivo": {"agricultura": 8, "comercio": -5, "popularidade": -5},
+      "incompativel_com": ["trabalho_livre", "sindicatos"]
+    },
+    {
+      "id": "trabalho_livre",
+      "nome": "Cidadania Livre",
+      "categoria": "trabalho",
+      "desc": "Homens livres produzem mais, mas exigem mais.",
+      "tags_semanticas": ["libertador", "moderno"],
+      "efeito_passivo": {"comercio": 5, "popularidade": 5, "agricultura": -3},
+      "incompativel_com": ["servidao", "escravidao_guerra"]
+    },
+    {
+      "id": "guildas",
+      "nome": "Monopólio das Guildas",
+      "categoria": "trabalho",
+      "desc": "Artesãos organizados controlam a qualidade e os preços.",
+      "tags_semanticas": ["burocrata", "protecionista"],
+      "efeito_passivo": {"tesouro": 5, "comercio": -5, "estabilidade": 2},
+      "incompativel_com": ["livre_comercio"]
+    },
+    {
+      "id": "mercantilismo",
+      "nome": "Mercantilismo",
+      "categoria": "economia",
+      "desc": "Acumular ouro é o único objetivo do Estado.",
+      "tags_semanticas": ["avarento", "centralizador"],
+      "efeito_passivo": {"tesouro": 8, "comercio": -2},
+      "incompativel_com": ["livre_comercio"]
+    },
+    {
+      "id": "livre_comercio",
+      "nome": "Livre Comércio",
+      "categoria": "economia",
+      "desc": "Deixar o mercado fluir sem fronteiras.",
+      "tags_semanticas": ["mercador", "globalista"],
+      "efeito_passivo": {"comercio": 10, "tesouro": 2, "estabilidade": -4},
+      "incompativel_com": ["mercantilismo", "guildas", "isolacionismo"]
+    },
+    {
+      "id": "imposto_sal",
+      "nome": "Gabela (Imposto do Sal)",
+      "categoria": "economia",
+      "desc": "Taxar o essencial enche os cofres, mas esvazia os estômagos.",
+      "tags_semanticas": ["avarento", "cruel"],
+      "efeito_passivo": {"tesouro": 15, "popularidade": -15, "agricultura": -5},
+      "incompativel_com": []
+    },
+    {
+      "id": "exercito_profissional",
+      "nome": "Exército Real",
+      "categoria": "militar",
+      "desc": "Soldados pagos e treinados, leais apenas à Coroa.",
+      "tags_semanticas": ["espartano", "centralizador"],
+      "efeito_passivo": {"militar": 15, "tesouro": -15, "estabilidade": 5},
+      "custo_ativacao": {"tesouro": -50},
+      "incompativel_com": ["levies_feudais", "mercenarios"]
+    },
+    {
+      "id": "levies_feudais",
+      "nome": "Bannermen",
+      "categoria": "militar",
+      "desc": "Convoque os camponeses dos lordes em tempos de guerra.",
+      "tags_semanticas": ["tradicional", "fraco"],
+      "efeito_passivo": {"militar": -5, "agricultura": -10, "tesouro": 5},
+      "incompativel_com": ["exercito_profissional"]
+    },
+    {
+      "id": "marinha_imperial",
+      "nome": "Grande Armada",
+      "categoria": "militar",
+      "desc": "Quem domina os mares, domina o mundo.",
+      "tags_semanticas": ["conquistador", "visionario"],
+      "efeito_passivo": {"militar": 5, "comercio": 10, "tesouro": -10},
+      "incompativel_com": ["isolacionismo"]
+    },
+    {
+      "id": "mercenarios",
+      "nome": "Companhias Livres",
+      "categoria": "militar",
+      "desc": "Guerreiros de aluguel. Fortes, mas leais apenas ao ouro.",
+      "tags_semanticas": ["pragmatico", "instavel"],
+      "efeito_passivo": {"militar": 10, "tesouro": -20, "estabilidade": -5},
+      "incompativel_com": ["exercito_profissional"]
+    },
+    {
+      "id": "mecenato",
+      "nome": "Mecenato Real",
+      "categoria": "cultura",
+      "desc": "Financiar pintores, filósofos e bardos.",
+      "tags_semanticas": ["culto", "esbanjador"],
+      "efeito_passivo": {"popularidade": 10, "tesouro": -10},
+      "incompativel_com": ["inquisicao", "austeridade"]
+    },
+    {
+      "id": "censura",
+      "nome": "Index Librorum",
+      "categoria": "cultura",
+      "desc": "Queimar livros perigosos antes que as ideias se espalhem.",
+      "tags_semanticas": ["obscurantista", "tirano"],
+      "efeito_passivo": {"estabilidade": 5, "comercio": -5},
+      "incompativel_com": ["liberdade_expressao", "mecenato"]
+    },
+    {
+      "id": "isolacionismo",
+      "nome": "Muralha de Ferro",
+      "categoria": "diplomacia",
+      "desc": "Feche as fronteiras. O mundo lá fora é um veneno.",
+      "tags_semanticas": ["xenofobo", "paranoico"],
+      "efeito_passivo": {"estabilidade": 10, "comercio": -20, "popularidade": -5},
+      "incompativel_com": ["livre_comercio", "marinha_imperial", "aliancas_matrimoniais"]
+    },
+    {
+      "id": "aliancas_matrimoniais",
+      "nome": "Diplomacia de Sangue",
+      "categoria": "diplomacia",
+      "desc": "Casar filhos e filhas para evitar guerras.",
+      "tags_semanticas": ["diplomata", "pacifista"],
+      "efeito_passivo": {"estabilidade": 5, "militar": -5, "popularidade": 2},
+      "incompativel_com": ["isolacionismo"]
+    },
+    {
+      "id": "educacao_religiosa",
+      "nome": "Escolas Monásticas",
+      "categoria": "educacao",
+      "desc": "A leitura serve apenas para estudar as Escrituras.",
+      "tags_semanticas": ["tradicional", "devoto"],
+      "efeito_passivo": {"estabilidade": 5, "comercio": -2},
+      "incompativel_com": ["educacao_publica"]
+    },
+    {
+      "id": "educacao_publica",
+      "nome": "Universidades Reais",
+      "categoria": "educacao",
+      "desc": "Conhecimento para formar burocratas e engenheiros.",
+      "tags_semanticas": ["iluminista", "progressista"],
+      "efeito_passivo": {"tesouro": -15, "comercio": 10, "popularidade": 5},
+      "incompativel_com": ["educacao_religiosa", "censura"]
+    },
+    {
+      "id": "colonizacao",
+      "nome": "Expansão Colonial",
+      "categoria": "exploracao",
+      "desc": "Buscar novas terras além do mar para explorar recursos.",
+      "tags_semanticas": ["imperialista", "ambicioso"],
+      "efeito_passivo": {"tesouro": 10, "comercio": 10, "militar": -5},
+      "req_ativacao": ["marinha_imperial"],
+      "incompativel_com": ["isolacionismo"]
+    }
+  ]
