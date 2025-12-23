@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Sovereign: The Living Chronicle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0b0b;
+            --panel: #141414;
+            --border: #333;
+            --gold: #c8aa6e;
+            --gold-dim: #7a6640;
+            --text: #c0c0c0;
+            --accent: #800; /* Red for drama */
+        }
+        
+        * { box-sizing: border-box; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Lato', sans-serif; height: 100vh; display: flex; overflow: hidden; }
+        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--gold); margin: 0; font-weight: 400; }
+        
+        /* LAYOUT */
+        .sidebar { width: 280px; background: var(--panel); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; z-index: 10; }
+        .main { flex: 1; display: flex; flex-direction: column; position: relative; background: radial-gradient(circle at center, #1a1a1a 0%, #000 120%); }
+        
+        /* STATS (Minimalist) */
+        .stat-row { margin-bottom: 25px; }
+        .stat-meta { display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; color: #666; }
+        .bar-track { height: 4px; background: #222; width: 100%; position: relative; }
+        .bar-fill { height: 100%; background: #555; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+        .bar-fill.danger { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .bar-fill.hubris { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+        
+        /* THRONE ROOM (Narrative Focus) */
+        .throne-view { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+        
+        .year-display { font-family: 'Cinzel'; font-size: 8rem; color: var(--gold); opacity: 0.05; position: absolute; top: 20px; z-index: 0; pointer-events: none; }
+        
+        .chronicle-box { 
+            width: 100%; max-width: 700px; height: 50vh; 
+            border-left: 1px solid var(--gold-dim); 
+            padding: 0 30px; 
+            overflow-y: auto; 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.1rem; 
+            line-height: 1.6;
+            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        }
+        
+        .log-entry { margin-bottom: 15px; opacity: 0.7; transition: 0.3s; }
+        .log-entry:last-child { opacity: 1; color: #fff; font-size: 1.2rem; }
+        .log-entry.turn-marker { text-align: center; font-family: 'Cinzel'; color: var(--gold-dim); margin: 30px 0; font-size: 0.9rem; letter-spacing: 3px; border-bottom: 1px solid #222; line-height: 0.1em; }
+        .log-entry.turn-marker span { background: #0b0b0b; padding: 0 10px; }
+
+        .controls { margin-top: 40px; display: flex; gap: 20px; z-index: 2; }
+        .btn-main { 
+            background: transparent; border: 1px solid var(--gold-dim); color: var(--gold); 
+            padding: 15px 40px; font-family: 'Cinzel'; letter-spacing: 2px; cursor: pointer; 
+            transition: 0.3s; font-size: 1rem; 
+        }
+        .btn-main:hover { background: rgba(200, 170, 110, 0.1); border-color: var(--gold); box-shadow: 0 0 15px rgba(200, 170, 110, 0.1); }
+
+        /* COUNCIL (Policy Web) */
+        .council-view { display: none; padding: 40px; overflow-y: auto; height: 100%; width: 100%; }
+        .council-view.active { display: block; animation: fadeIn 0.5s; }
+        
+        .cat-section { margin-bottom: 50px; }
+        .cat-header { font-size: 1.5rem; border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 10px; color: #666; font-family: 'Cinzel'; }
+        .policy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        
+        .pol-card { 
+            background: #111; border: 1px solid #222; padding: 20px; cursor: pointer; transition: 0.3s; position: relative;
+            display: flex; flex-direction: column; min-height: 160px;
+        }
+        .pol-card:hover { border-color: #444; transform: translateY(-3px); }
+        .pol-card.active { border-color: var(--gold); background: #1a1610; }
+        .pol-card.blocked { opacity: 0.5; cursor: not-allowed; border-color: #311; }
+        
+        .pol-title { font-family: 'Playfair Display'; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: #ddd; }
+        .pol-card.active .pol-title { color: var(--gold); }
+        .pol-desc { font-size: 0.85rem; color: #777; line-height: 1.4; flex: 1; }
+        .pol-meta { font-size: 0.7rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px; color: #555; display: flex; justify-content: space-between; }
+        .pol-err { color: var(--accent); font-style: italic; font-size: 0.75rem; margin-top: 5px; }
+
+        /* MODAL (Event) */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
+        .modal-overlay.active { display: flex; animation: driftIn 0.6s ease-out; }
+        
+        .event-paper { width: 600px; max-width: 90%; text-align: center; position: relative; }
+        .ev-theme { color: var(--accent); letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 15px; text-transform: uppercase; }
+        .ev-title { font-size: 2.5rem; margin-bottom: 25px; line-height: 1.1; color: #eee; }
+        .ev-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #bbb; line-height: 1.6; margin-bottom: 40px; }
+        
+        .ev-opt { 
+            width: 100%; background: transparent; border: 1px solid #444; color: #999; 
+            padding: 20px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; text-align: left;
+            font-family: 'Lato'; display: flex; justify-content: space-between; align-items: center;
+        }
+        .ev-opt:hover { border-color: var(--gold); color: #fff; background: rgba(255,255,255,0.02); }
+        .ev-opt strong { font-size: 1.1rem; color: var(--gold); }
+
+        /* TAGS (Semantic Brain) */
+        .tag-cloud { margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
+        .tag-title { font-size: 0.7rem; color: #444; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { font-size: 0.7rem; color: #888; border: 1px solid #333; padding: 2px 6px; border-radius: 4px; }
+        
+        @keyframes driftIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div style="text-align:center; margin-bottom:40px; color:var(--gold); font-family:'Cinzel'; letter-spacing:2px; font-size:1.2rem">SOVEREIGN</div>
+    <div id="stats-container"></div>
+    
+    <div class="tag-cloud">
+        <div class="tag-title">Sua Alma (Visão do Diretor)</div>
+        <div class="tags" id="tags-container"></div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="year-display" id="year-bg">I</div>
+    
+    <div id="view-throne" class="throne-view">
+        <div class="chronicle-box" id="log-box"></div>
+        <div class="controls">
+            <button class="btn-main" onclick="setView('throne')">CRÔNICA</button>
+            <button class="btn-main" onclick="nextTurn()" id="btn-next">PRÓXIMO CAPÍTULO</button>
+            <button class="btn-main" onclick="setView('council')">LEIS</button>
+        </div>
+    </div>
+
+    <div id="view-council" class="council-view">
+        <div id="policy-container"></div>
+        <br><br>
+        <button class="btn-main" onclick="setView('throne')">VOLTAR AO TRONO</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+    <div class="event-paper">
+        <div class="ev-theme" id="ev-theme">TEMA</div>
+        <h2 class="ev-title" id="ev-title">...</h2>
+        <div class="ev-text" id="ev-text">...</div>
+        <div id="ev-options"></div>
+    </div>
+</div>
+
+<script>
+    let state = null;
+
+    async function init() {
+        try {
+            const r = await fetch('/get_estado');
+            state = await r.json();
+            render();
+        } catch(e) { console.error(e); }
+    }
+
+    function setView(v) {
+        document.getElementById('view-throne').style.display = (v==='throne'?'flex':'none');
+        const c = document.getElementById('view-council');
+        if(v==='council') { c.classList.add('active'); c.style.display='block'; }
+        else { c.classList.remove('active'); c.style.display='none'; }
+    }
+
+    function render() {
+        // Stats
+        const sb = document.getElementById('stats-container');
+        sb.innerHTML = '';
+        for(let [k,v] of Object.entries(state.stats)) {
+            let cl = v < 20 ? 'danger' : (v > 80 ? 'hubris' : '');
+            sb.innerHTML += `
+            <div class="stat-row">
+                <div class="stat-meta"><span>${k}</span><span>${v}</span></div>
+                <div class="bar-track"><div class="bar-fill ${cl}" style="width:${v}%"></div></div>
+            </div>`;
+        }
+
+        // Tags
+        const tb = document.getElementById('tags-container');
+        tb.innerHTML = state.tags.length ? state.tags.map(t => `<span class="tag">[${t.toUpperCase()}]</span>`).join('') : '<span class="tag" style="opacity:0.3">Alma vazia...</span>';
+
+        // Log (Chronicle)
+        const lb = document.getElementById('log-box');
+        lb.innerHTML = state.log.map(l => {
+            if(l.startsWith('---')) return `<div class="log-entry turn-marker"><span>${l.replace(/-/g,'')}</span></div>`;
+            return `<div class="log-entry">${l}</div>`;
+        }).join('');
+        lb.scrollTop = lb.scrollHeight;
+        
+        document.getElementById('year-bg').innerText = Romanize(state.turno);
+
+        // Policies
+        const pc = document.getElementById('policy-container');
+        pc.innerHTML = '';
+        for(let [cat, pols] of Object.entries(state.politicas)) {
+            let grid = pols.map(p => {
+                let status = p.ativa ? 'active' : '';
+                let blocked = (!p.ativa && !p.clicavel) ? 'blocked' : '';
+                let lockMsg = p.bloqueada ? `🔒 ${p.turnos_bloqueio} anos` : (p.ativa ? 'VIGENTE' : 'INATIVA');
+                
+                return `
+                <div class="pol-card ${status} ${blocked}" onclick="toggle('${p.id}')">
+                    <div class="pol-title">${p.nome}</div>
+                    <div class="pol-desc">${p.desc}</div>
+                    ${p.motivo_bloqueio ? `<div class="pol-err">${p.motivo_bloqueio}</div>` : ''}
+                    <div class="pol-meta">
+                        <span>${lockMsg}</span>
+                    </div>
+                </div>`;
+            }).join('');
+            pc.innerHTML += `<div class="cat-section"><div class="cat-header">${cat}</div><div class="policy-grid">${grid}</div></div>`;
+        }
+
+        // Event Modal
+        const m = document.getElementById('modal');
+        if(state.evento_atual) {
+            const ev = state.evento_atual;
+            document.getElementById('ev-title').innerText = ev.titulo;
+            document.getElementById('ev-text').innerText = ev.texto;
+            document.getElementById('ev-theme').innerText = ev.tema ? `ARCO: ${ev.tema}` : 'EVENTO';
+            
+            document.getElementById('ev-options').innerHTML = ev.opcoes.map(op => {
+                return `<div class="ev-opt" onclick="resolve('${ev.id}', '${op.id}')">
+                    <span>${op.texto}</span>
+                </div>`;
+            }).join('');
+            m.classList.add('active');
+        } else {
+            m.classList.remove('active');
+        }
+    }
+
+    async function toggle(pid) {
+        await fetch('/toggle_politica', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:pid})});
+        init();
+    }
+    
+    async function nextTurn() {
+        document.getElementById('btn-next').innerText = "ESCREVENDO...";
+        await fetch('/passar_turno', {method:'POST'});
+        init();
+        document.getElementById('btn-next').innerText = "PRÓXIMO CAPÍTULO";
+    }
+
+    async function resolve(eid, oid) {
+        await fetch('/resolver_evento', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({evento_id:eid, opcao_id:oid})});
+        init();
+    }
+
+    function Romanize(num) {
+        if (isNaN(num)) return NaN;
+        var digits = String(+num).split(""),
+            key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+                   "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+                   "","I","II","III","IV","V","VI","VII","VIII","IX"],
+            roman = "",
+            i = 3;
+        while (i--) roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+        return Array(+digits.join("") + 1).join("M") + roman;
+    }
+
+    init();
+</script>
+</body>
+</html>
