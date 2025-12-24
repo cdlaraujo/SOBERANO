@@ -5,16 +5,14 @@ import glob
 # Tenta carregar a biblioteca da IA
 try:
     from llama_cpp import Llama
-    
     def inicializar_llm():
         """Busca modelo .gguf e inicia a IA."""
         model_files = glob.glob("*.gguf")
         if model_files:
             print(f">>> CARREGANDO MODELO: {model_files[0]} ...")
-            return Llama(model_path=model_files[0], n_ctx=2048, n_gpu_layers=-1, verbose=False)
-        print(">>> NENHUM MODELO ENCONTRADO. MODO LOBOTOMIA ATIVADO.")
+            return Llama(model_path=model_files[0], n_ctx=4096, n_gpu_layers=-1, verbose=False)
+        print(">>> NENHUM MODELO ENCONTRADO.")
         return None
-
 except ImportError:
     print(">>> LLAMA_CPP NÃO INSTALADO. MODO LOBOTOMIA ATIVADO.")
     def inicializar_llm(): 

@@ -8,7 +8,7 @@
       "peso_drama": 100,
       "opcoes": [
         {"id": "A", "texto": "Executar o Profeta (Tirania)", "efeito": {"estabilidade": 10, "popularidade": -20}, "tags_efeito": ["MATADOR_DE_SANTOS"], "resposta": "O profeta morreu rindo. O povo agora o adora como mártir."},
-        {"id": "B", "texto": "Distribuir Ouro (Humildade)", "efeito": {"tesouro": -40, "popularidade": 15}, "resposta": "O ouro se foi. O povo aplaude, mas os nobres o chamam de fraco."}
+        {"id": "B", "texto": "Distribuir Ouro (Humildade)", "efeito": {"tesouro": -40, "popularidade": 15}, "tags_efeito": ["CARIDOSO"], "resposta": "O ouro se foi. O povo aplaude, mas os nobres o chamam de fraco."}
       ]
     },
     {
@@ -32,7 +32,7 @@
       "peso_drama": 40,
       "opcoes": [
         {"id": "A", "texto": "Construir a Estátua", "efeito": {"tesouro": -20, "popularidade": -10}, "tags_efeito": ["MEGALOMANIACO"], "resposta": "Ela brilha sob o sol, cegando os mendigos."},
-        {"id": "B", "texto": "Construir um Hospital", "efeito": {"tesouro": -20, "popularidade": 15}, "resposta": "O povo louva sua misericórdia."}
+        {"id": "B", "texto": "Construir um Hospital", "efeito": {"tesouro": -20, "popularidade": 15}, "tags_efeito": ["MISERICORDIOSO"], "resposta": "O povo louva sua misericórdia."}
       ]
     },
     {
@@ -43,8 +43,8 @@
       "gatilho_semantico": ["fanatico", "avarento"],
       "peso_drama": 95,
       "opcoes": [
-        {"id": "A", "texto": "Comprar a Igreja", "efeito": {"tesouro": -30, "estabilidade": 10}, "tags_efeito": ["SIMONIA"], "resposta": "O Papa aceitou o suborno. Deus talvez não aceite."},
-        {"id": "B", "texto": "Confessar Pecados", "efeito": {"popularidade": 10, "tesouro": -10}, "resposta": "Humilhado publicamente, mas perdoado."}
+        {"id": "A", "texto": "Comprar a Igreja", "efeito": {"tesouro": -30, "estabilidade": 10}, "tags_efeito": ["SIMONIA", "CORRUPTOR"], "resposta": "O Papa aceitou o suborno. Deus talvez não aceite."},
+        {"id": "B", "texto": "Confessar Pecados", "efeito": {"popularidade": 10, "tesouro": -10}, "tags_efeito": ["PENITENTE"], "resposta": "Humilhado publicamente, mas perdoado."}
       ]
     },
     {
@@ -56,7 +56,7 @@
       "peso_drama": 60,
       "opcoes": [
         {"id": "A", "texto": "Censurar e Prender", "efeito": {"popularidade": -10, "estabilidade": 5}, "tags_efeito": ["SEM_HUMOR"], "resposta": "O riso parou, mas o ódio cresceu."},
-        {"id": "B", "texto": "Rir Consigo Mesmo", "efeito": {"popularidade": 10, "estabilidade": -5}, "resposta": "Você desarmou a crítica com bom humor."}
+        {"id": "B", "texto": "Rir Consigo Mesmo", "efeito": {"popularidade": 10, "estabilidade": -5}, "tags_efeito": ["BEM_HUMORADO"], "resposta": "Você desarmou a crítica com bom humor."}
       ]
     },
     {
@@ -68,7 +68,7 @@
       "peso_drama": 85,
       "opcoes": [
         {"id": "A", "texto": "Purgar a Corte", "efeito": {"estabilidade": -10, "militar": 5}, "tags_efeito": ["PARANOICO"], "resposta": "Muitos inocentes morreram para pegar um culpado."},
-        {"id": "B", "texto": "Investigação Discreta", "efeito": {"tesouro": -10, "estabilidade": 5}, "resposta": "O culpado foi encontrado e exilado silenciosamente."}
+        {"id": "B", "texto": "Investigação Discreta", "efeito": {"tesouro": -10, "estabilidade": 5}, "tags_efeito": ["INVESTIGADOR"], "resposta": "O culpado foi encontrado e exilado silenciosamente."}
       ]
     },
     {
@@ -79,8 +79,8 @@
       "gatilho_semantico": ["falido"],
       "peso_drama": 80,
       "opcoes": [
-        {"id": "A", "texto": "Ignorar", "efeito": {"popularidade": -20}, "tags_efeito": ["INDIFERENTE"], "resposta": "O silêncio dos mortos é ensurdecedor."},
-        {"id": "B", "texto": "Vender Terras da Coroa", "efeito": {"tesouro": 20, "estabilidade": -10}, "resposta": "Você alimenta o povo vendendo o futuro do reino."}
+        {"id": "A", "texto": "Ignorar", "efeito": {"popularidade": -20}, "tags_efeito": ["INDIFERENTE", "CRUEL"], "resposta": "O silêncio dos mortos é ensurdecedor."},
+        {"id": "B", "texto": "Vender Terras da Coroa", "efeito": {"tesouro": 20, "estabilidade": -10}, "tags_efeito": ["DESESPERADO"], "resposta": "Você alimenta o povo vendendo o futuro do reino."}
       ]
     },
     {
@@ -92,7 +92,7 @@
       "peso_drama": 90,
       "opcoes": [
         {"id": "A", "texto": "Aceitar os Termos", "efeito": {"tesouro": 40, "comercio": -20}, "tags_efeito": ["ENDIVIDADO"], "resposta": "Ouro hoje, miséria amanhã."},
-        {"id": "B", "texto": "Confiscar Bens da Igreja", "efeito": {"tesouro": 30, "popularidade": -20, "estabilidade": -10}, "tags_efeito": ["SAQUEADOR"], "resposta": "Os padres amaldiçoam seu nome, mas as contas foram pagas."}
+        {"id": "B", "texto": "Confiscar Bens da Igreja", "efeito": {"tesouro": 30, "popularidade": -20, "estabilidade": -10}, "tags_efeito": ["SAQUEADOR", "IMPIO"], "resposta": "Os padres amaldiçoam seu nome, mas as contas foram pagas."}
       ]
     },
     {
@@ -103,8 +103,8 @@
       "gatilho_semantico": ["vulneravel"],
       "peso_drama": 85,
       "opcoes": [
-        {"id": "A", "texto": "Pagar Tributo", "efeito": {"tesouro": -15, "estabilidade": 5}, "tags_efeito": ["VASSALO"], "resposta": "A paz foi comprada com a honra."},
-        {"id": "B", "texto": "Recusar e Mobilizar", "efeito": {"militar": 5, "tesouro": -10, "estabilidade": -5}, "resposta": "Eles virão. Esteja pronto."}
+        {"id": "A", "texto": "Pagar Tributo", "efeito": {"tesouro": -15, "estabilidade": 5}, "tags_efeito": ["VASSALO", "SUBMISSO"], "resposta": "A paz foi comprada com a honra."},
+        {"id": "B", "texto": "Recusar e Mobilizar", "efeito": {"militar": 5, "tesouro": -10, "estabilidade": -5}, "tags_efeito": ["ORGULHOSO"], "resposta": "Eles virão. Esteja pronto."}
       ]
     },
     {
@@ -116,7 +116,7 @@
       "peso_drama": 90,
       "opcoes": [
         {"id": "A", "texto": "Pagar Resgate", "efeito": {"tesouro": -40}, "tags_efeito": ["COVARDE"], "resposta": "Eles partiram carregados de ouro. Voltarão ano que vem."},
-        {"id": "B", "texto": "Enfrentar no Campo", "efeito": {"militar": -20, "popularidade": 10}, "resposta": "Uma vitória pirrosa. O campo está tingido de vermelho."}
+        {"id": "B", "texto": "Enfrentar no Campo", "efeito": {"militar": -20, "popularidade": 10}, "tags_efeito": ["GUERREIRO"], "resposta": "Uma vitória pirrosa. O campo está tingido de vermelho."}
       ]
     },
     {
@@ -127,8 +127,8 @@
       "gatilho_semantico": ["instavel", "falido"],
       "peso_drama": 85,
       "opcoes": [
-        {"id": "A", "texto": "Pagar o Dobro", "efeito": {"tesouro": -30}, "resposta": "Eles aceitam o ouro e riem da sua fraqueza."},
-        {"id": "B", "texto": "Enviar a Guarda Real", "efeito": {"militar": -15, "estabilidade": -5}, "resposta": "Batalha nas ruas. Os traidores foram mortos."}
+        {"id": "A", "texto": "Pagar o Dobro", "efeito": {"tesouro": -30}, "tags_efeito": ["REFEM"], "resposta": "Eles aceitam o ouro e riem da sua fraqueza."},
+        {"id": "B", "texto": "Enviar a Guarda Real", "efeito": {"militar": -15, "estabilidade": -5}, "tags_efeito": ["IMPLACAVEL"], "resposta": "Batalha nas ruas. Os traidores foram mortos."}
       ]
     },
     {
@@ -139,8 +139,8 @@
       "gatilho_semantico": ["midas", "estavel"],
       "peso_drama": 40,
       "opcoes": [
-        {"id": "A", "texto": "Celebrar com eles", "efeito": {"popularidade": -5, "estabilidade": 5}, "resposta": "Vinho e faisão. O povo olha pelos portões."},
-        {"id": "B", "texto": "Discurso de Austeridade", "efeito": {"estabilidade": -5, "tesouro": 5}, "resposta": "Eles acharam a piada de mau gosto e esconderam as joias."}
+        {"id": "A", "texto": "Celebrar com eles", "efeito": {"popularidade": -5, "estabilidade": 5}, "tags_efeito": ["FESTEIRO"], "resposta": "Vinho e faisão. O povo olha pelos portões."},
+        {"id": "B", "texto": "Discurso de Austeridade", "efeito": {"estabilidade": -5, "tesouro": 5}, "tags_efeito": ["ESTOICO"], "resposta": "Eles acharam a piada de mau gosto e esconderam as joias."}
       ]
     },
     {
@@ -151,7 +151,7 @@
       "gatilho_semantico": ["mercador", "globalista"],
       "peso_drama": 95,
       "opcoes": [
-        {"id": "A", "texto": "Quarentena Total", "efeito": {"comercio": -30, "popularidade": -10, "estabilidade": 10}, "resposta": "A economia parou, mas a cidade sobreviveu."},
+        {"id": "A", "texto": "Quarentena Total", "efeito": {"comercio": -30, "popularidade": -10, "estabilidade": 10}, "tags_efeito": ["PRAGMATICO"], "resposta": "A economia parou, mas a cidade sobreviveu."},
         {"id": "B", "texto": "Orações e Procissões", "efeito": {"estabilidade": -10, "popularidade": 5}, "tags_efeito": ["SUPERSTICIOSO"], "resposta": "As aglomerações só espalharam a doença mais rápido."}
       ]
     },
@@ -163,8 +163,8 @@
       "gatilho_semantico": ["agricultura_baixa"],
       "peso_drama": 70,
       "opcoes": [
-        {"id": "A", "texto": "Importar Grãos Caros", "efeito": {"tesouro": -25, "popularidade": 10}, "resposta": "O tesouro sangra, mas o povo come."},
-        {"id": "B", "texto": "Confiscar dos Camponeses", "efeito": {"popularidade": -30, "agricultura": -5}, "tags_efeito": ["FOME"], "resposta": "Revoltas camponesas eclodiram no interior."}
+        {"id": "A", "texto": "Importar Grãos Caros", "efeito": {"tesouro": -25, "popularidade": 10}, "tags_efeito": ["PROTETOR"], "resposta": "O tesouro sangra, mas o povo come."},
+        {"id": "B", "texto": "Confiscar dos Camponeses", "efeito": {"popularidade": -30, "agricultura": -5}, "tags_efeito": ["FOME", "LADRAO"], "resposta": "Revoltas camponesas eclodiram no interior."}
       ]
     },
     {
@@ -176,7 +176,7 @@
       "peso_drama": 30,
       "opcoes": [
         {"id": "A", "texto": "Consultar Astrônomos", "efeito": {"tesouro": -5}, "tags_efeito": ["RACIONAL"], "resposta": "É apenas gelo e poeira, dizem os sábios."},
-        {"id": "B", "texto": "Fazer Sacrifícios", "efeito": {"popularidade": 5, "estabilidade": 5}, "resposta": "O povo se acalma com o sangue dos bodes."}
+        {"id": "B", "texto": "Fazer Sacrifícios", "efeito": {"popularidade": 5, "estabilidade": 5}, "tags_efeito": ["PAGAO"], "resposta": "O povo se acalma com o sangue dos bodes."}
       ]
     },
     {
@@ -200,7 +200,7 @@
       "peso_drama": 50,
       "opcoes": [
         {"id": "A", "texto": "Financiar a Obra", "efeito": {"tesouro": -50, "popularidade": 10}, "tags_efeito": ["CONSTRUTOR"], "resposta": "Uma maravilha de pedra que durará mil anos."},
-        {"id": "B", "texto": "Negar os Fundos", "efeito": {"estabilidade": -5, "tesouro": 10}, "resposta": "O Bispo prega sobre a avareza dos reis no domingo."}
+        {"id": "B", "texto": "Negar os Fundos", "efeito": {"estabilidade": -5, "tesouro": 10}, "tags_efeito": ["AVARENTO"], "resposta": "O Bispo prega sobre a avareza dos reis no domingo."}
       ]
     },
     {
@@ -212,7 +212,7 @@
       "peso_drama": 50,
       "opcoes": [
         {"id": "A", "texto": "Proteger as Máquinas", "efeito": {"comercio": 10, "popularidade": -10}, "tags_efeito": ["PROGRESSISTA"], "resposta": "O progresso é inevitável, assim como a miséria de alguns."},
-        {"id": "B", "texto": "Apoiar os Artesãos", "efeito": {"comercio": -10, "popularidade": 10}, "tags_efeito": ["LUDITA"], "resposta": "As máquinas foram quebradas. A tradição foi mantida."}
+        {"id": "B", "texto": "Apoiar os Artesãos", "efeito": {"comercio": -10, "popularidade": 10}, "tags_efeito": ["LUDITA", "TRADICIONAL"], "resposta": "As máquinas foram quebradas. A tradição foi mantida."}
       ]
     },
     {
@@ -223,8 +223,8 @@
       "gatilho_semantico": ["opressor", "fome"],
       "peso_drama": 95,
       "opcoes": [
-        {"id": "A", "texto": "Negociar Reformas", "efeito": {"popularidade": 20, "estabilidade": -10, "tesouro": -10}, "resposta": "Você cedeu poder para manter a cabeça."},
-        {"id": "B", "texto": "Esmagar sem Piedade", "efeito": {"popularidade": -30, "estabilidade": 20, "militar": -5}, "tags_efeito": ["AÇOUGUEIRO"], "resposta": "Os campos foram adubados com cadáveres."}
+        {"id": "A", "texto": "Negociar Reformas", "efeito": {"popularidade": 20, "estabilidade": -10, "tesouro": -10}, "tags_efeito": ["DIPLOMATA", "FRACO"], "resposta": "Você cedeu poder para manter a cabeça."},
+        {"id": "B", "texto": "Esmagar sem Piedade", "efeito": {"popularidade": -30, "estabilidade": 20, "militar": -5}, "tags_efeito": ["AÇOUGUEIRO", "TEMIDO"], "resposta": "Os campos foram adubados com cadáveres."}
       ]
     },
     {
@@ -235,8 +235,8 @@
       "gatilho_semantico": ["tirano", "velho"],
       "peso_drama": 75,
       "opcoes": [
-        {"id": "A", "texto": "Deserdar e Exilar", "efeito": {"estabilidade": -10, "popularidade": -10}, "tags_efeito": ["SEM_HERDEIRO"], "resposta": "Você manteve o poder, mas perdeu o futuro."},
-        {"id": "B", "texto": "Dar-lhe um ducado", "efeito": {"tesouro": -10, "estabilidade": 5}, "resposta": "Ele está ocupado governando, longe da capital."}
+        {"id": "A", "texto": "Deserdar e Exilar", "efeito": {"estabilidade": -10, "popularidade": -10}, "tags_efeito": ["SEM_HERDEIRO", "IMPEDOSO"], "resposta": "Você manteve o poder, mas perdeu o futuro."},
+        {"id": "B", "texto": "Dar-lhe um ducado", "efeito": {"tesouro": -10, "estabilidade": 5}, "tags_efeito": ["CONCILIADOR"], "resposta": "Ele está ocupado governando, longe da capital."}
       ]
     },
     {
@@ -248,7 +248,7 @@
       "peso_drama": 100,
       "opcoes": [
         {"id": "A", "texto": "Execução Pública Brutal", "efeito": {"estabilidade": 10, "popularidade": -5}, "tags_efeito": ["SANGUINARIO"], "resposta": "O medo mantém a ordem melhor que a lealdade."},
-        {"id": "B", "texto": "Julgamento Justo", "efeito": {"estabilidade": -5, "popularidade": 10}, "resposta": "A justiça foi feita, mas eles viraram mártires."}
+        {"id": "B", "texto": "Julgamento Justo", "efeito": {"estabilidade": -5, "popularidade": 10}, "tags_efeito": ["JUSTO"], "resposta": "A justiça foi feita, mas eles viraram mártires."}
       ]
     },
     {
@@ -259,8 +259,8 @@
       "gatilho_semantico": ["paranoico", "policia_secreta"],
       "peso_drama": 70,
       "opcoes": [
-        {"id": "A", "texto": "Admitir o Erro", "efeito": {"estabilidade": -10, "popularidade": 5}, "resposta": "A polícia secreta perdeu autoridade, mas o povo respeita sua honestidade."},
-        {"id": "B", "texto": "Fabricar Provas", "efeito": {"estabilidade": 5, "popularidade": -10}, "tags_efeito": ["MENTIROSO"], "resposta": "Ele foi executado como traidor. A mentira virou verdade."}
+        {"id": "A", "texto": "Admitir o Erro", "efeito": {"estabilidade": -10, "popularidade": 5}, "tags_efeito": ["HONESTO"], "resposta": "A polícia secreta perdeu autoridade, mas o povo respeita sua honestidade."},
+        {"id": "B", "texto": "Fabricar Provas", "efeito": {"estabilidade": 5, "popularidade": -10}, "tags_efeito": ["MENTIROSO", "MAQUIAVELICO"], "resposta": "Ele foi executado como traidor. A mentira virou verdade."}
       ]
     },
     {
@@ -271,8 +271,8 @@
       "gatilho_semantico": ["imperialista", "azarado"],
       "peso_drama": 60,
       "opcoes": [
-        {"id": "A", "texto": "Aumentar Impostos Locais", "efeito": {"tesouro": 10, "popularidade": -15}, "resposta": "O povo paga pelo fracasso do mar."},
-        {"id": "B", "texto": "Aceitar o Prejuízo", "efeito": {"tesouro": -20}, "resposta": "O mar dá, o mar tira."}
+        {"id": "A", "texto": "Aumentar Impostos Locais", "efeito": {"tesouro": 10, "popularidade": -15}, "tags_efeito": ["EXPLORADOR"], "resposta": "O povo paga pelo fracasso do mar."},
+        {"id": "B", "texto": "Aceitar o Prejuízo", "efeito": {"tesouro": -20}, "tags_efeito": ["RESIGNADO"], "resposta": "O mar dá, o mar tira."}
       ]
     },
     {
@@ -283,8 +283,8 @@
       "gatilho_semantico": ["supersticioso", "devoto"],
       "peso_drama": 40,
       "opcoes": [
-        {"id": "A", "texto": "Taxar os Peregrinos", "efeito": {"tesouro": 15, "popularidade": -5}, "resposta": "A fé é um negócio lucrativo."},
-        {"id": "B", "texto": "Construir um Santuário", "efeito": {"tesouro": -10, "popularidade": 10}, "resposta": "O local virou sagrado em seu nome."}
+        {"id": "A", "texto": "Taxar os Peregrinos", "efeito": {"tesouro": 15, "popularidade": -5}, "tags_efeito": ["MERCENARIO"], "resposta": "A fé é um negócio lucrativo."},
+        {"id": "B", "texto": "Construir um Santuário", "efeito": {"tesouro": -10, "popularidade": 10}, "tags_efeito": ["DEVOTO"], "resposta": "O local virou sagrado em seu nome."}
       ]
     },
     {
@@ -295,8 +295,44 @@
       "gatilho_semantico": ["espartano", "pobre"],
       "peso_drama": 80,
       "opcoes": [
-        {"id": "A", "texto": "Dezemar (Matar 1 a cada 10)", "efeito": {"militar": 5, "popularidade": -20}, "tags_efeito": ["CRUEL"], "resposta": "A disciplina foi restaurada pelo terror."},
-        {"id": "B", "texto": "Melhorar o Soldo", "efeito": {"tesouro": -15, "militar": 5}, "resposta": "Eles lutam, mas o cofre chora."}
+        {"id": "A", "texto": "Dezemar (Matar 1 a cada 10)", "efeito": {"militar": 5, "popularidade": -20}, "tags_efeito": ["CRUEL", "DISCIPLINADOR"], "resposta": "A disciplina foi restaurada pelo terror."},
+        {"id": "B", "texto": "Melhorar o Soldo", "efeito": {"tesouro": -15, "militar": 5}, "tags_efeito": ["GENERAl_BONDOSO"], "resposta": "Eles lutam, mas o cofre chora."}
+      ]
+    },
+    {
+      "id": 99001,
+      "titulo": "Dia de Audiência",
+      "texto": "Nenhum exército marcha, nenhuma praga assola. Apenas uma fila de camponeses com disputas sobre cercas e cabras.",
+      "tema": "gestao",
+      "gatilho_semantico": [],
+      "peso_drama": 20,
+      "opcoes": [
+        {"id": "A", "texto": "Julgar Pessoalmente", "efeito": {"popularidade": 5}, "tags_efeito": ["ZELOSO", "POPULISTA"], "resposta": "O povo adora um rei que ouve."},
+        {"id": "B", "texto": "Delegar aos Escribas", "efeito": {"estabilidade": 2}, "tags_efeito": ["DISTANTE", "BUROCRATA"], "resposta": "Burocracia eficiente é a base do reino."}
+      ]
+    },
+    {
+      "id": 99002,
+      "titulo": "O Tempo Vira",
+      "texto": "Uma tempestade de verão inunda algumas caves, mas rega as colheitas.",
+      "tema": "gestao",
+      "gatilho_semantico": [],
+      "peso_drama": 20,
+      "opcoes": [
+        {"id": "A", "texto": "Inspecionar Danos", "efeito": {"popularidade": 2, "tesouro": -2}, "tags_efeito": ["PREOCUPADO"], "resposta": "Sua presença conforta os afetados."},
+        {"id": "B", "texto": "Ficar no Palácio", "efeito": {}, "tags_efeito": ["INDIFERENTE"], "resposta": "A chuva passa, o reinado continua."}
+      ]
+    },
+    {
+      "id": 99003,
+      "titulo": "Festival Menor",
+      "texto": "É dia de São Ninguém. O povo dança na praça.",
+      "tema": "gestao",
+      "gatilho_semantico": [],
+      "peso_drama": 20,
+      "opcoes": [
+        {"id": "A", "texto": "Patrocinar Bebida", "efeito": {"tesouro": -5, "popularidade": 5}, "tags_efeito": ["FESTEIRO", "GENEROSO"], "resposta": "Um pequeno preço por sorrisos."},
+        {"id": "B", "texto": "Ignorar a Festa", "efeito": {"tesouro": 2}, "tags_efeito": ["AUSTERO", "CHATO"], "resposta": "O trabalho continua."}
       ]
     }
 ]
