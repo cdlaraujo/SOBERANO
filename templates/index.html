@@ -12,7 +12,7 @@
             --gold: #c8aa6e;
             --gold-dim: #7a6640;
             --text: #c0c0c0;
-            --accent: #800; /* Red for drama */
+            --accent: #800;
         }
         
         * { box-sizing: border-box; }
@@ -23,7 +23,7 @@
         .sidebar { width: 280px; background: var(--panel); border-right: 1px solid var(--border); padding: 30px 20px; display: flex; flex-direction: column; z-index: 10; }
         .main { flex: 1; display: flex; flex-direction: column; position: relative; background: radial-gradient(circle at center, #1a1a1a 0%, #000 120%); }
         
-        /* STATS (Minimalist) */
+        /* STATS */
         .stat-row { margin-bottom: 25px; }
         .stat-meta { display: flex; justify-content: space-between; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; color: #666; }
         .bar-track { height: 4px; background: #222; width: 100%; position: relative; }
@@ -31,9 +31,8 @@
         .bar-fill.danger { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .bar-fill.hubris { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
         
-        /* THRONE ROOM (Narrative Focus) */
+        /* THRONE ROOM */
         .throne-view { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
-        
         .year-display { font-family: 'Cinzel'; font-size: 8rem; color: var(--gold); opacity: 0.05; position: absolute; top: 20px; z-index: 0; pointer-events: none; }
         
         .chronicle-box { 
@@ -61,10 +60,9 @@
         }
         .btn-main:hover { background: rgba(200, 170, 110, 0.1); border-color: var(--gold); box-shadow: 0 0 15px rgba(200, 170, 110, 0.1); }
 
-        /* COUNCIL (Policy Web) */
+        /* COUNCIL */
         .council-view { display: none; padding: 40px; overflow-y: auto; height: 100%; width: 100%; }
         .council-view.active { display: block; animation: fadeIn 0.5s; }
-        
         .cat-section { margin-bottom: 50px; }
         .cat-header { font-size: 1.5rem; border-bottom: 1px solid #333; margin-bottom: 20px; padding-bottom: 10px; color: #666; font-family: 'Cinzel'; }
         .policy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
@@ -75,7 +73,7 @@
         }
         .pol-card:hover { border-color: #444; transform: translateY(-3px); }
         .pol-card.active { border-color: var(--gold); background: #1a1610; }
-        .pol-card.blocked { opacity: 0.5; cursor: not-allowed; border-color: #311; }
+        .pol-card.blocked { opacity: 0.5; cursor: not-allowed; border-color: #311; pointer-events: none; }
         
         .pol-title { font-family: 'Playfair Display'; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; color: #ddd; }
         .pol-card.active .pol-title { color: var(--gold); }
@@ -83,7 +81,7 @@
         .pol-meta { font-size: 0.7rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px; color: #555; display: flex; justify-content: space-between; }
         .pol-err { color: var(--accent); font-style: italic; font-size: 0.75rem; margin-top: 5px; }
 
-        /* MODAL (Event) */
+        /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; animation: driftIn 0.6s ease-out; }
         
@@ -98,9 +96,11 @@
             font-family: 'Lato'; display: flex; justify-content: space-between; align-items: center;
         }
         .ev-opt:hover { border-color: var(--gold); color: #fff; background: rgba(255,255,255,0.02); }
-        .ev-opt strong { font-size: 1.1rem; color: var(--gold); }
+        .ev-opt.disabled { opacity: 0.4; cursor: not-allowed; border-color: #311; }
+        .ev-opt.disabled:hover { background: none; color: #999; }
+        .opt-cost-err { color: var(--accent); font-size: 0.7rem; font-style: italic; margin-left: 10px; }
 
-        /* TAGS (Semantic Brain) */
+        /* TAGS */
         .tag-cloud { margin-top: auto; padding-top: 20px; border-top: 1px solid #222; }
         .tag-title { font-size: 0.7rem; color: #444; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
         .tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -185,7 +185,7 @@
         const tb = document.getElementById('tags-container');
         tb.innerHTML = state.tags.length ? state.tags.map(t => `<span class="tag">[${t.toUpperCase()}]</span>`).join('') : '<span class="tag" style="opacity:0.3">Alma vazia...</span>';
 
-        // Log (Chronicle)
+        // Log
         const lb = document.getElementById('log-box');
         lb.innerHTML = state.log.map(l => {
             if(l.startsWith('---')) return `<div class="log-entry turn-marker"><span>${l.replace(/-/g,'')}</span></div>`;
@@ -195,7 +195,7 @@
         
         document.getElementById('year-bg').innerText = Romanize(state.turno);
 
-        // Policies
+        // Policies (Atualizado para mostrar custo de estabilidade)
         const pc = document.getElementById('policy-container');
         pc.innerHTML = '';
         for(let [cat, pols] of Object.entries(state.politicas)) {
@@ -203,14 +203,16 @@
                 let status = p.ativa ? 'active' : '';
                 let blocked = (!p.ativa && !p.clicavel) ? 'blocked' : '';
                 let lockMsg = p.bloqueada ? `🔒 ${p.turnos_bloqueio} anos` : (p.ativa ? 'VIGENTE' : 'INATIVA');
+                let costMsg = p.custo_estabilidade ? `<span style="color:#a44">-${p.custo_estabilidade} ESTABILIDADE</span>` : '';
                 
                 return `
-                <div class="pol-card ${status} ${blocked}" onclick="toggle('${p.id}')">
+                <div class="pol-card ${status} ${blocked}" onclick="${!p.clicavel ? '' : `toggle('${p.id}')`}">
                     <div class="pol-title">${p.nome}</div>
                     <div class="pol-desc">${p.desc}</div>
                     ${p.motivo_bloqueio ? `<div class="pol-err">${p.motivo_bloqueio}</div>` : ''}
                     <div class="pol-meta">
                         <span>${lockMsg}</span>
+                        ${costMsg}
                     </div>
                 </div>`;
             }).join('');
@@ -226,8 +228,12 @@
             document.getElementById('ev-theme').innerText = ev.tema ? `ARCO: ${ev.tema}` : 'EVENTO';
             
             document.getElementById('ev-options').innerHTML = ev.opcoes.map(op => {
-                return `<div class="ev-opt" onclick="resolve('${ev.id}', '${op.id}')">
-                    <span>${op.texto}</span>
+                let disabledClass = op.bloqueado ? 'disabled' : '';
+                let clickAction = op.bloqueado ? '' : `resolve('${ev.id}', '${op.id}')`;
+                let costErr = op.motivo_bloqueio ? `<span class="opt-cost-err">(${op.motivo_bloqueio})</span>` : '';
+                
+                return `<div class="ev-opt ${disabledClass}" onclick="${clickAction}">
+                    <span>${op.texto} ${costErr}</span>
                 </div>`;
             }).join('');
             m.classList.add('active');
