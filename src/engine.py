@@ -12,6 +12,7 @@ class GameEngine:
             },
             "politicas_ativas": ["servidao", "absolutismo"],
             "politicas_bloqueadas": {},
+            "tags_reputacao": [],  # NOVO: Armazena tags acumuladas
             "log": ["O Diretor: 'A história começa...'"],
             "ultimo_evento": None,
             "game_over": False
@@ -44,6 +45,40 @@ class GameEngine:
             self.state['ultimo_evento'] = evt_morte
             return True
         return False
+
+    def _inferir_tags_semanticas(self):
+        """Gera tags baseadas no estado atual do reino (visão da IA)."""
+        s = self.state['stats']
+        tags = []
+        
+        # Tags baseadas em stats extremos
+        if s['tesouro'] > 80: tags.append("midas")
+        elif s['tesouro'] < 20: tags.extend(["falido", "pobre"])
+        
+        if s['militar'] > 80: tags.append("espartano")
+        elif s['militar'] < 30: tags.append("vulneravel")
+        
+        if s['popularidade'] < 30: tags.extend(["impopular", "opressor"])
+        elif s['popularidade'] > 80: tags.append("amado")
+        
+        if s['estabilidade'] < 30: tags.append("instavel")
+        elif s['estabilidade'] > 80: tags.append("estavel")
+        
+        # Tags baseadas em políticas
+        if "teocracia" in self.state['politicas_ativas']: tags.extend(["fanatico", "devoto"])
+        if "secularismo" in self.state['politicas_ativas']: tags.append("herege")
+        if "absolutismo" in self.state['politicas_ativas']: tags.append("tirano")
+        if "parlamentarismo" in self.state['politicas_ativas']: tags.append("fraco")
+        if "livre_comercio" in self.state['politicas_ativas']: tags.extend(["mercador", "globalista"])
+        if "lei_marcial" in self.state['politicas_ativas']: tags.append("opressor")
+        if "mecenato" in self.state['politicas_ativas']: tags.append("culto")
+        if "policia_secreta" in self.state['politicas_ativas']: tags.append("paranoico")
+        if "isolacionismo" in self.state['politicas_ativas']: tags.append("xenofobo")
+        
+        # Tags de reputação histórica (acumuladas de eventos)
+        tags.extend(self.state['tags_reputacao'])
+        
+        return list(set(tags))  # Remove duplicatas
 
     def get_view_data(self):
         """Prepara dados para o Frontend."""
@@ -86,7 +121,7 @@ class GameEngine:
             "politicas": politicas_view,
             "evento_atual": self.state['ultimo_evento'],
             "game_over": self.state['game_over'],
-            "tags": [] 
+            "tags": self._inferir_tags_semanticas()  # CORRIGIDO: Agora popula as tags
         }
 
     def processar_turno(self, llm_instance, diretor_func):
@@ -108,14 +143,15 @@ class GameEngine:
             if v > 1: novos_bloq[k] = v - 1
         self.state['politicas_bloqueadas'] = novos_bloq
 
-        # 3. Verifica Morte ANTES do evento (efeitos passivos podem matar)
-        if self._checar_game_over(): return {"status": "game_over"}
-
-        # 4. Escolha do Evento (AI)
+        # 3. Escolha do Evento ANTES de checar morte (CORRIGIDO)
         evento = diretor_func(llm_instance, self.state, self.db['eventos'])
         self.state['ultimo_evento'] = evento
         self.state['log'].append(f"--- Ano {self.state['turno']} ---")
         
+        # 4. Checa morte DEPOIS de atribuir evento (CORRIGIDO)
+        if self._checar_game_over(): 
+            return {"status": "game_over"}
+
         return {"status": "ok"}
 
     def resolver_evento(self, evento_id, opcao_id):
@@ -135,6 +171,12 @@ class GameEngine:
                         self.state['stats'][k] = self._aplicar_limites(self.state['stats'][k] + v)
                         sinal = "+" if v > 0 else ""
                         desc_efeitos.append(f"{k.capitalize()} {sinal}{v}")
+                
+                # NOVO: Adiciona tags de reputação
+                if 'tags_efeito' in op:
+                    for tag in op['tags_efeito']:
+                        if tag not in self.state['tags_reputacao']:
+                            self.state['tags_reputacao'].append(tag)
                 
                 self.state['log'].append(f"Decisão: {op['texto']} -> {op.get('resposta', 'Feito.')}")
                 
@@ -172,7 +214,7 @@ class GameEngine:
 
             # Aplica custo
             for k, v in custo.items():
-                self.state['stats'][k] += v
+                self.state['stats'][k] = self._aplicar_limites(self.state['stats'][k] + v)
             
             self.state['politicas_ativas'].append(pid)
             self.state['politicas_bloqueadas'][pid] = self.config.get('turnos_bloqueio_padrao', 8)
