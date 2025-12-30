@@ -1,56 +1,57 @@
 # src/rules.py
+
 class RuleEngine:
     """
-    Camada 1: Filtros Determinísticos (Hard Constraints).
-    Impede que a IA sugira eventos impossíveis para o estado atual.
+    Layer 1: Deterministic Filters (Hard Constraints).
+    Prevents the AI from suggesting impossible events for the current state.
     """
     
     @staticmethod
-    def filtrar_viaveis(lista_eventos, gamestate):
+    def filter_viable(event_list, gamestate):
         s = gamestate['stats']
-        ultimos = gamestate.get('ultimos_temas', [])
-        viaveis = []
+        last_themes = gamestate.get('last_themes', [])
+        viable = []
 
-        # Detecção de Estado Crítico (Edge Case)
-        is_falido = s['tesouro'] < 15
-        is_anarquia = s['estabilidade'] < 15
+        # Critical State Detection (Edge Case)
+        is_bankrupt = s['treasury'] < 15
+        is_anarchy = s['stability'] < 15
 
-        for ev in lista_eventos:
-            tema = ev.get('tema', 'geral')
+        for ev in event_list:
+            theme = ev.get('theme', 'general')
 
-            # 1. REGRA DE SOBREVIVÊNCIA
-            # Se o reino está em colapso, bloqueia eventos de luxo (hubris)
-            if (is_falido or is_anarquia) and tema == 'hubris':
+            # 1. SURVIVAL RULE
+            # If the kingdom is collapsing, block luxury events (hubris)
+            if (is_bankrupt or is_anarchy) and theme == 'hubris':
                 continue 
 
-            # 2. REGRA DE RECURSOS (Lógica Rígida)
-            if tema == 'hubris' and s['tesouro'] < 60:
+            # 2. RESOURCE RULE (Rigid Logic)
+            if theme == 'hubris' and s['treasury'] < 60:
                 continue
-            if tema == 'desespero' and s['tesouro'] > 50:
+            if theme == 'despair' and s['treasury'] > 50:
                 continue
             
-            # 3. ANTI-REPETIÇÃO (Cooldown de 2 turnos)
-            # 'game_over' e 'gestao' (eventos genéricos) furam o bloqueio
-            if ultimos and tema not in ['game_over', 'gestao']:
-                if tema in ultimos[-2:]:
+            # 3. ANTI-REPETITION (2 turn cooldown)
+            # 'game_over' and 'management' (generic events) bypass block
+            if last_themes and theme not in ['game_over', 'management']:
+                if theme in last_themes[-2:]:
                     continue
 
-            # 4. GATILHOS SEMÂNTICOS
-            # Se o evento exige tags específicas (ex: precisa ser 'tirano')
-            reqs = ev.get('gatilho_semantico', [])
+            # 4. SEMANTIC TRIGGERS
+            # If the event requires specific tags (e.g., needs to be 'tyrant')
+            reqs = ev.get('semantic_trigger', [])
             if reqs:
-                # CORREÇÃO ITEM 1:
-                # Agora usa diretamente as tags já calculadas pela engine.py
-                # Isso garante que Regras e UI vejam a mesma realidade.
-                tags_atuais = gamestate.get('tags_estado', []) + gamestate.get('tags_reputacao', [])
+                # REPAIR ITEM 1:
+                # Now uses tags directly calculated by engine.py
+                # This ensures Rules and UI see the same reality.
+                current_tags = gamestate.get('state_tags', []) + gamestate.get('reputation_tags', [])
                 
-                # Se não tem NENHUMA das tags exigidas
-                if not any(r in tags_atuais for r in reqs):
-                    # Se for um evento muito dramático, bloqueia. 
-                    # Se for evento menor (<80 drama), deixa passar aleatoriamente (10% de chance)
-                    if ev.get('peso_drama', 0) >= 80:
+                # If it has NONE of the required tags
+                if not any(r in current_tags for r in reqs):
+                    # If it's a very dramatic event, block. 
+                    # If it's a minor event (<80 drama), let it pass randomly (10% chance)
+                    if ev.get('drama_weight', 0) >= 80:
                         continue
 
-            viaveis.append(ev)
+            viable.append(ev)
         
-        return viaveis
+        return viable

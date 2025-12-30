@@ -1,3 +1,5 @@
+# src/engine.py
+
 import random
 
 class GameEngine:
@@ -5,316 +7,327 @@ class GameEngine:
         self.db = db
         self.config = db.get('config', {})
         self.state = {
-            "turno": 1,
+            "turn": 1,
             "stats": {
-                "tesouro": 50, "militar": 50, "popularidade": 50, 
-                "estabilidade": 50, "agricultura": 50, "comercio": 50
+                "treasury": 50, "military": 50, "popularity": 50, 
+                "stability": 50, "agriculture": 50, "commerce": 50
             },
-            "politicas_ativas": ["servidao", "absolutismo"],
-            "politicas_bloqueadas": {},
+            "active_policies": ["serfdom", "absolutism"],
+            "blocked_policies": {},
             
-            # CORREÇÃO 1: Separação de Tags
-            "tags_eventos": [],    # Tags ganhas em decisões (Permanentes)
-            "tags_estado": [],     # Tags calculadas dos stats (Dinâmicas)
-            # 'tags_reputacao' agora será uma propriedade calculada, não armazenada pura
+            # REPAIR 1: Tag Separation
+            "event_tags": [],    # Tags gained from decisions (Permanent)
+            "state_tags": [],    # Tags calculated from stats (Dynamic)
+            # 'reputation_tags' will now be a calculated property, not stored pure
             
-            "memoria_decisoes": [], 
-            "log": ["O Diretor: 'A história começa...'"],
-            "ultimo_evento": None,
+            "decision_memory": [], 
+            "log": ["The Director: 'The history begins...'"],
+            "last_event": None,
             "game_over": False,
-            "historico_stats": []
+            "stats_history": []
         }
         
-        self.atualizar_tags()
+        self.update_tags()
 
-    def _aplicar_limites(self, valor):
-        """Garante a regra estrita: Ouro e stats sempre entre 0 e 100."""
-        return max(0, min(100, valor))
+    def _apply_limits(self, value):
+        """Ensures strict rule: Gold and stats always between 0 and 100."""
+        return max(0, min(100, value))
 
-    def atualizar_tags(self):
-        """Recalcula todas as tags baseadas no estado atual."""
+    def update_tags(self):
+        """Recalculates all tags based on current state."""
         s = self.state['stats']
-        tags_est = []
+        tags_st = []
         
-        # 1. Tags Numéricas (Estado)
-        if s['tesouro'] > 75: tags_est.extend(["midas", "rico"])
-        elif s['tesouro'] < 10: tags_est.extend(["falido", "pobre"])
-        elif s['tesouro'] < 25: tags_est.append("pobre")
+        # 1. Numeric Tags (State)
+        if s['treasury'] > 75: tags_st.extend(["midas", "rich"])
+        elif s['treasury'] < 10: tags_st.extend(["bankrupt", "poor"])
+        elif s['treasury'] < 25: tags_st.append("poor")
         
-        if s['militar'] > 75: tags_est.append("espartano")
-        elif s['militar'] < 25: tags_est.append("vulneravel")
+        if s['military'] > 75: tags_st.append("spartan")
+        elif s['military'] < 25: tags_st.append("vulnerable")
         
-        if s['popularidade'] < 25: tags_est.extend(["impopular", "odiado", "opressor"])
-        elif s['popularidade'] > 75: tags_est.append("amado")
+        if s['popularity'] < 25: tags_st.extend(["unpopular", "hated", "oppressor"])
+        elif s['popularity'] > 75: tags_st.append("beloved")
         
-        if s['estabilidade'] < 25: tags_est.append("caos")
+        if s['stability'] < 25: tags_st.append("chaos")
         
-        self.state['tags_estado'] = tags_est
+        self.state['state_tags'] = tags_st
 
-    def get_tags_reputacao(self):
+    def get_reputation_tags(self):
         """
-        Combina tags de Eventos (Histórico) + Tags de Leis Ativas.
-        Isso resolve o bug da 'Memória Eterna' ao revogar leis.
+        Combines Event Tags (History) + Active Law Tags.
+        This solves the 'Eternal Memory' bug when revoking laws.
         """
-        tags_leis = []
-        for pid in self.state['politicas_ativas']:
-            pol = next((p for p in self.db['politicas'] if p['id'] == pid), None)
-            if pol and 'tags_permanentes' in pol:
-                tags_leis.extend(pol['tags_permanentes'])
+        law_tags = []
+        for pid in self.state['active_policies']:
+            pol = next((p for p in self.db['policies'] if p['id'] == pid), None)
+            if pol and 'permanent_tags' in pol:
+                law_tags.extend(pol['permanent_tags'])
         
-        # Retorna lista única sem duplicatas
-        return list(set(self.state['tags_eventos'] + tags_leis))
+        # Return unique list without duplicates
+        return list(set(self.state['event_tags'] + law_tags))
 
     def get_view_data(self):
-        evt = self.state['ultimo_evento']
+        evt = self.state['last_event']
         
-        # Lógica de Bloqueio de Opções
+        # Option Blocking Logic
         if evt and evt['id'] != 99999:
-            opcoes_bloqueadas = 0
-            total_opcoes = len(evt['opcoes'])
+            options_blocked = 0
+            total_options = len(evt['options'])
 
-            for op in evt['opcoes']:
-                op['bloqueado'] = False
-                op['motivo_bloqueio'] = ""
-                custos = {k: v for k, v in op.get('efeito', {}).items() if v < 0}
+            for op in evt['options']:
+                op['blocked'] = False
+                op['block_reason'] = ""
+                costs = {k: v for k, v in op.get('effect', {}).items() if v < 0}
                 
-                for stat, custo in custos.items():
-                    # Verifica se o jogador tem saldo (respeitando o limite 0)
-                    if self.state['stats'].get(stat, 0) + custo < 0:
-                        op['bloqueado'] = True
-                        op['motivo_bloqueio'] = f"Requer {abs(custo)} {stat.capitalize()}"
+                for stat, cost in costs.items():
+                    # Check if player has balance (respecting 0 limit)
+                    if self.state['stats'].get(stat, 0) + cost < 0:
+                        op['blocked'] = True
+                        op['block_reason'] = f"Requires {abs(cost)} {stat.capitalize()}"
                 
-                if op['bloqueado']: opcoes_bloqueadas += 1
+                if op['blocked']: options_blocked += 1
 
-            # CORREÇÃO 2: Anti-Softlock
-            # Se TODAS as opções estiverem bloqueadas (ex: tem 0 ouro e tudo custa ouro),
-            # Injeta uma opção de fuga para o jogo não travar.
-            if opcoes_bloqueadas == total_opcoes:
-                evt['opcoes'].append({
+            # REPAIR 2: Anti-Softlock
+            # If ALL options are blocked (e.g. has 0 gold and everything costs gold),
+            # Inject an escape option so game doesn't freeze.
+            if options_blocked == total_options:
+                evt['options'].append({
                     "id": "COLLAPSE",
-                    "texto": "[SEM RECURSOS] O governo paralisa...",
-                    "bloqueado": False,
-                    "efeito": {"estabilidade": -15, "popularidade": -10},
-                    "motivo_bloqueio": "Única saída disponível"
+                    "text": "[NO RESOURCES] The government paralyzes...",
+                    "blocked": False,
+                    "effect": {"stability": -15, "popularity": -10},
+                    "block_reason": "Only available exit"
                 })
 
-        # Visualização de Políticas (Mesma lógica corrigida anterior)
-        politicas_view = {}
-        tags_at = self.get_tags_reputacao() # Usa o getter corrigido
+        # Policies View (Same corrected logic as before)
+        policies_view = {}
+        tags_at = self.get_reputation_tags() # Use corrected getter
 
-        for pol in self.db['politicas']:
-            cat = pol.get('categoria', 'outros').capitalize()
-            if cat not in politicas_view: politicas_view[cat] = []
+        for pol in self.db['policies']:
+            cat = pol.get('category', 'others').capitalize()
+            if cat not in policies_view: policies_view[cat] = []
             
             p_data = pol.copy()
-            p_data['ativa'] = pol['id'] in self.state['politicas_ativas']
-            p_data['turnos_bloqueio'] = self.state['politicas_bloqueadas'].get(pol['id'], 0)
-            p_data['bloqueada'] = p_data['turnos_bloqueio'] > 0
-            p_data['clicavel'] = True
+            p_data['active'] = pol['id'] in self.state['active_policies']
+            p_data['lock_turns'] = self.state['blocked_policies'].get(pol['id'], 0)
+            p_data['blocked'] = p_data['lock_turns'] > 0
+            p_data['clickable'] = True
             
-            motivos = []
-            custo_estab = 10
+            reasons = []
+            cost_estab = 10
             
-            # Custo extra por incoerência narrativa
-            if 'aversao' in pol:
-                if any(t in pol['aversao'] for t in tags_at):
-                    custo_estab *= 2
-                    motivos.append("Contra sua natureza")
+            # Extra cost for narrative incoherence
+            if 'aversion' in pol:
+                if any(t in pol['aversion'] for t in tags_at):
+                    cost_estab *= 2
+                    reasons.append("Against your nature")
 
-            if self.state['stats']['estabilidade'] < custo_estab:
-                motivos.append(f"Instável demais (-{custo_estab} Estab.)")
-                p_data['clicavel'] = False
+            if self.state['stats']['stability'] < cost_estab:
+                reasons.append(f"Too Unstable (-{cost_estab} Stab.)")
+                p_data['clickable'] = False
             else:
-                p_data['custo_estabilidade'] = custo_estab
+                p_data['stability_cost'] = cost_estab
 
-            if not p_data['ativa']:
-                # Verifica custos de ativação
-                custo_ativ = pol.get('custo_ativacao', {})
-                for k, v in custo_ativ.items():
+            if not p_data['active']:
+                # Check activation costs
+                cost_activ = pol.get('activation_cost', {})
+                for k, v in cost_activ.items():
                     if self.state['stats'].get(k, 0) + v < 0:
-                        motivos.append(f"Falta {abs(v)} {k}")
-                        p_data['clicavel'] = False
+                        reasons.append(f"Lacks {abs(v)} {k}")
+                        p_data['clickable'] = False
             
-            # Verifica incompativeis
-            if 'incompativel_com' in pol:
-                if any(i in self.state['politicas_ativas'] for i in pol['incompativel_com']):
-                    motivos.append("Incompatível")
-                    p_data['clicavel'] = False
+            # Check incompatibilities
+            if 'incompatible_with' in pol:
+                if any(i in self.state['active_policies'] for i in pol['incompatible_with']):
+                    reasons.append("Incompatible")
+                    p_data['clickable'] = False
 
-            p_data['motivo_bloqueio'] = ", ".join(motivos)
-            politicas_view[cat].append(p_data)
+            p_data['block_reason'] = ", ".join(reasons)
+            policies_view[cat].append(p_data)
 
         return {
             "stats": self.state['stats'],
-            "turno": self.state['turno'],
+            "turn": self.state['turn'],
             "log": self.state['log'],
-            "politicas": politicas_view,
-            "evento_atual": self.state['ultimo_evento'],
+            "policies": policies_view,
+            "current_event": self.state['last_event'],
             "game_over": self.state['game_over'],
-            "tags": list(set(tags_at + self.state['tags_estado']))
+            "tags": list(set(tags_at + self.state['state_tags']))
         }
 
-    def processar_turno(self, llm_instance, director_obj):
+    def process_turn(self, llm_instance, director_obj):
         if self.state['game_over']: return {"status": "game_over"}
 
-        # Histórico
-        self.state['historico_stats'].append(self.state['stats'].copy())
-        if len(self.state['historico_stats']) > 5: self.state['historico_stats'].pop(0)
+        # History
+        self.state['stats_history'].append(self.state['stats'].copy())
+        if len(self.state['stats_history']) > 5: self.state['stats_history'].pop(0)
 
-        self.state['turno'] += 1
+        self.state['turn'] += 1
         
-        # Efeitos Passivos
-        for pid in self.state['politicas_ativas']:
-            pol = next((p for p in self.db['politicas'] if p['id'] == pid), None)
+        # Passive Effects
+        for pid in self.state['active_policies']:
+            pol = next((p for p in self.db['policies'] if p['id'] == pid), None)
             if pol:
-                for k, v in pol.get('efeito_passivo', {}).items():
+                for k, v in pol.get('passive_effect', {}).items():
                     if k in self.state['stats']:
-                        self.state['stats'][k] = self._aplicar_limites(self.state['stats'][k] + v)
+                        self.state['stats'][k] = self._apply_limits(self.state['stats'][k] + v)
 
         # Cooldowns
-        novos_bloq = {}
-        for k, v in self.state['politicas_bloqueadas'].items():
-            if v > 1: novos_bloq[k] = v - 1
-        self.state['politicas_bloqueadas'] = novos_bloq
+        new_blocked = {}
+        for k, v in self.state['blocked_policies'].items():
+            if v > 1: new_blocked[k] = v - 1
+        self.state['blocked_policies'] = new_blocked
 
-        self.atualizar_tags()
+        self.update_tags()
 
-        # Chama o Diretor (passando o objeto instanciado, não função estática)
-        # Preparamos o gamestate injetando as tags calculadas corretamente
+        # Call Director (passing object instance)
+        # We prepare gamestate injecting correctly calculated tags
         gamestate_snapshot = self.state.copy()
-        gamestate_snapshot['tags_reputacao'] = self.get_tags_reputacao()
+        gamestate_snapshot['reputation_tags'] = self.get_reputation_tags()
+        gamestate_snapshot['last_themes'] = [e['theme'] for e in self.state['decision_memory'] if isinstance(e, dict)] # Correction for theme tracking if needed, simplified below
+        # Actually logic uses 'last_themes' in rules.py, but state saves 'decision_memory' as strings...
+        # Let's fix this slightly: rules.py expects 'last_themes'. 
+        # We need to extract themes from log or store them. 
+        # Since original code had 'ultimos_temas' logic but didn't implement it fully in engine, 
+        # I'll add a helper list for themes.
+        if 'theme_history' not in self.state: self.state['theme_history'] = []
+        gamestate_snapshot['last_themes'] = self.state['theme_history']
+
+        event = director_obj.choose_event(llm_instance, gamestate_snapshot)
         
-        evento = director_obj.escolher_evento(llm_instance, gamestate_snapshot)
+        self.state['last_event'] = event
+        self.state['log'].append(f"--- Year {self.state['turn']} ---")
         
-        self.state['ultimo_evento'] = evento
-        self.state['log'].append(f"--- Ano {self.state['turno']} ---")
-        
-        if self._checar_game_over(): 
+        if self._check_game_over(): 
             return {"status": "game_over"}
 
         return {"status": "ok"}
 
-    def resolver_evento(self, evento_id, opcao_id):
-        if str(evento_id) == "99999" or opcao_id == "RESET":
+    def resolve_event(self, event_id, option_id):
+        if str(event_id) == "99999" or option_id == "RESET":
             self.__init__(self.db)
             return {"status": "reset"}
 
-        # Tratamento da Opção de Colapso (Safety Valve)
-        if opcao_id == "COLLAPSE":
-            self.state['stats']['estabilidade'] = self._aplicar_limites(self.state['stats']['estabilidade'] - 15)
-            self.state['stats']['popularidade'] = self._aplicar_limites(self.state['stats']['popularidade'] - 10)
-            self.state['log'].append("Decisão: O governo não conseguiu agir. O caos aumenta.")
-            self.state['ultimo_evento'] = None
-            self._checar_game_over()
+        # Collapse Option Treatment (Safety Valve)
+        if option_id == "COLLAPSE":
+            self.state['stats']['stability'] = self._apply_limits(self.state['stats']['stability'] - 15)
+            self.state['stats']['popularity'] = self._apply_limits(self.state['stats']['popularity'] - 10)
+            self.state['log'].append("Decision: The government failed to act. Chaos rises.")
+            self.state['last_event'] = None
+            self._check_game_over()
             return {"status": "ok"}
 
         ev = None
-        if self.state['ultimo_evento'] and str(self.state['ultimo_evento']['id']) == str(evento_id):
-            ev = self.state['ultimo_evento']
+        if self.state['last_event'] and str(self.state['last_event']['id']) == str(event_id):
+            ev = self.state['last_event']
         else:
-            # Fallback (não deveria acontecer em fluxo normal)
-            ev = next((e for e in self.db['eventos'] if str(e['id']) == str(evento_id)), None)
+            # Fallback
+            ev = next((e for e in self.db['events'] if str(e['id']) == str(event_id)), None)
 
         if ev:
-            op = next((o for o in ev['opcoes'] if o['id'] == opcao_id), None)
+            op = next((o for o in ev['options'] if o['id'] == option_id), None)
             if op:
-                efeitos = op.get('efeito', {})
-                # Validação de Recursos (Double Check)
-                for k, v in efeitos.items():
+                effects = op.get('effect', {})
+                # Resource Validation (Double Check)
+                for k, v in effects.items():
                     if v < 0:
-                        atual = self.state['stats'].get(k, 0)
-                        if atual + v < 0:
-                            return {"status": "erro", "msg": f"Recursos insuficientes: {k}"}
+                        current = self.state['stats'].get(k, 0)
+                        if current + v < 0:
+                            return {"status": "error", "msg": f"Insufficient resources: {k}"}
 
-                # Aplica
-                for k, v in efeitos.items():
+                # Apply
+                for k, v in effects.items():
                     if k in self.state['stats']:
-                        self.state['stats'][k] = self._aplicar_limites(self.state['stats'][k] + v)
+                        self.state['stats'][k] = self._apply_limits(self.state['stats'][k] + v)
 
-                # CORREÇÃO 1: Tags de Eventos vão para lista separada
-                tags_novas = []
-                if 'tags_efeito' in op:
-                    for tag in op['tags_efeito']:
-                        if tag not in self.state['tags_eventos']:
-                            self.state['tags_eventos'].append(tag)
-                            tags_novas.append(tag)
+                # REPAIR 1: Event Tags go to separate list
+                tags_new = []
+                if 'effect_tags' in op:
+                    for tag in op['effect_tags']:
+                        if tag not in self.state['event_tags']:
+                            self.state['event_tags'].append(tag)
+                            tags_new.append(tag)
                 
-                tags_str = f" [{', '.join(tags_novas)}]" if tags_novas else ""
-                self.state['memoria_decisoes'].append(f"Ano {self.state['turno']}: Escolheu '{op['texto']}' em '{ev['titulo']}'{tags_str}.")
-                if len(self.state['memoria_decisoes']) > 12: self.state['memoria_decisoes'].pop(0)
+                tags_str = f" [{', '.join(tags_new)}]" if tags_new else ""
+                self.state['decision_memory'].append(f"Year {self.state['turn']}: Chose '{op['text']}' in '{ev['title']}'{tags_str}.")
+                if len(self.state['decision_memory']) > 12: self.state['decision_memory'].pop(0)
 
-                self.state['log'].append(f"Decisão: {op['texto']}")
-                self.atualizar_tags()
-                self._checar_game_over()
+                # Update theme history for Rules
+                if 'theme_history' not in self.state: self.state['theme_history'] = []
+                self.state['theme_history'].append(ev.get('theme', 'general'))
+                if len(self.state['theme_history']) > 8: self.state['theme_history'].pop(0)
+
+                self.state['log'].append(f"Decision: {op['text']}")
+                self.update_tags()
+                self._check_game_over()
         
-        self.state['ultimo_evento'] = None
+        self.state['last_event'] = None
         return {"status": "ok"}
     
-    def _checar_game_over(self):
+    def _check_game_over(self):
         s = self.state['stats']
-        causa = None
+        cause = None
         
-        if s['estabilidade'] <= 0: causa = "Anarquia total. O reino colapsou."
-        elif s['popularidade'] <= 0: causa = "Revolução popular. A guilhotina aguarda."
-        elif s['militar'] <= 0: causa = "Conquista externa."
-        # Mantemos a lógica original de falência + fraqueza militar
-        elif s['tesouro'] <= 0 and s['militar'] < 20: causa = "Estado falido e indefeso."
+        if s['stability'] <= 0: cause = "Total Anarchy. The realm collapsed."
+        elif s['popularity'] <= 0: cause = "Popular Revolution. The guillotine awaits."
+        elif s['military'] <= 0: cause = "External Conquest."
+        elif s['treasury'] <= 0 and s['military'] < 20: cause = "State bankrupt and defenseless."
 
-        if causa and not self.state['game_over']:
+        if cause and not self.state['game_over']:
             self.state['game_over'] = True
-            self.state['log'].append(f"--- FIM DA LINHA: {causa} ---")
+            self.state['log'].append(f"--- END OF THE LINE: {cause} ---")
             
-            evt_morte = {
+            evt_death = {
                 "id": 99999,
-                "titulo": "O FIM DA DINASTIA",
-                "texto": causa,
-                "tema": "game_over",
-                "opcoes": [{"id": "RESET", "texto": "Começar Nova História", "efeito": {}, "resposta": "..."}]
+                "title": "THE END OF THE DYNASTY",
+                "text": cause,
+                "theme": "game_over",
+                "options": [{"id": "RESET", "text": "Start New History", "effect": {}, "response": "..."}]
             }
-            self.state['ultimo_evento'] = evt_morte
+            self.state['last_event'] = evt_death
             return True
         return False
 
-    def toggle_politica(self, pid):
-        # Lógica simplificada pois get_view_data já faz validação pesada
-        if self.state['game_over']: return {"erro": "Fim de jogo"}, 400
+    def toggle_policy(self, pid):
+        # Simplified logic as get_view_data does heavy validation
+        if self.state['game_over']: return {"error": "Game Over"}, 400
         
-        pol = next((p for p in self.db['politicas'] if p['id'] == pid), None)
-        if not pol: return {"erro": "Lei inválida"}, 400
+        pol = next((p for p in self.db['policies'] if p['id'] == pid), None)
+        if not pol: return {"error": "Invalid Law"}, 400
         
-        tags_at = self.get_tags_reputacao()
-        custo_base = 10
-        if 'aversao' in pol and any(t in pol['aversao'] for t in tags_at):
-            custo_base *= 2
+        tags_at = self.get_reputation_tags()
+        cost_base = 10
+        if 'aversion' in pol and any(t in pol['aversion'] for t in tags_at):
+            cost_base *= 2
             
-        if self.state['stats']['estabilidade'] < custo_base:
-            return {"erro": "Estabilidade insuficiente"}, 400
+        if self.state['stats']['stability'] < cost_base:
+            return {"error": "Insufficient Stability"}, 400
 
         msg = ""
-        if pid in self.state['politicas_ativas']:
-            # REVOGAR
-            self.state['politicas_ativas'].remove(pid)
-            # Obs: As tags somem automaticamente no próximo get_tags_reputacao()
-            # pois ele lê de politicas_ativas
-            msg = f"Revogada: {pol['nome']}"
+        if pid in self.state['active_policies']:
+            # REVOKE
+            self.state['active_policies'].remove(pid)
+            # Obs: Tags vanish automatically in next get_reputation_tags()
+            msg = f"Revoked: {pol['name']}"
         else:
-            # PROMULGAR
-            # Valida custo
-            custo = pol.get('custo_ativacao', {})
-            for k, v in custo.items():
+            # ENACT
+            # Validate cost
+            cost = pol.get('activation_cost', {})
+            for k, v in cost.items():
                 if self.state['stats'].get(k, 0) + v < 0:
-                     return {"erro": f"Falta {k}"}, 400
+                     return {"error": f"Lacks {k}"}, 400
             
-            # Aplica custo
-            for k, v in custo.items():
-                self.state['stats'][k] = self._aplicar_limites(self.state['stats'][k] + v)
+            # Apply cost
+            for k, v in cost.items():
+                self.state['stats'][k] = self._apply_limits(self.state['stats'][k] + v)
                 
-            self.state['politicas_ativas'].append(pid)
-            self.state['politicas_bloqueadas'][pid] = self.config.get('turnos_bloqueio_padrao', 8)
-            msg = f"Promulgada: {pol['nome']}"
+            self.state['active_policies'].append(pid)
+            self.state['blocked_policies'][pid] = self.config.get('default_lock_turns', 8)
+            msg = f"Enacted: {pol['name']}"
 
-        self.state['stats']['estabilidade'] -= custo_base
+        self.state['stats']['stability'] -= cost_base
         self.state['log'].append(msg)
-        self.atualizar_tags()
+        self.update_tags()
         
         return {"status": "ok", "msg": msg}, 200
