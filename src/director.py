@@ -24,59 +24,39 @@ except ImportError:
 class DirectorInteligente:
     def __init__(self, lista_eventos):
         self.todos_eventos = lista_eventos
-        print(f">>> Director v2: {len(self.todos_eventos)} eventos carregados")
+        print(f">>> Director Init: {len(self.todos_eventos)} eventos na memória.")
     
     def escolher_evento(self, llm_instance, gamestate):
-        """Pipeline Híbrido: Regras -> IA -> Fallback"""
+        """
+        Recebe a instância da LLM e o estado do jogo.
+        Retorna um dicionário de evento.
+        """
         
-        # 1. CAMADA DE REGRAS (Filtra o impossível)
+        # 1. CAMADA DE REGRAS
+        # O gamestate já vem preparado pela engine com as tags corretas
         candidatos = RuleEngine.filtrar_viaveis(self.todos_eventos, gamestate)
         print(f">>> [RULES] {len(candidatos)} eventos viáveis.")
 
-        # Se as regras removerem tudo (raro), usa fallback total
         if not candidatos:
-            print(">>> [ALERTA] Nenhum evento viável. Usando aleatório.")
+            # Fallback extremo se as regras matarem tudo (ex: todos eventos são 'hubris' e rei está 'pobre')
+            print(">>> [ALERTA] Nenhum evento viável nas regras. Sorteando qualquer um.")
             return random.choice(self.todos_eventos)
 
         escolhido = None
 
-        # 2. CAMADA DE IA (Pensa e Escolhe)
-        # Só ativa se houver IA e houver mais de 1 opção
+        # 2. CAMADA DE IA
         if llm_instance and len(candidatos) > 1:
-            # Limita a 5 opções para não confundir a IA
             pool_ia = random.sample(candidatos, min(5, len(candidatos)))
-            
             engine = LLMDecisionEngine(llm_instance)
             escolhido = engine.selecionar_evento(pool_ia, gamestate)
 
-        # 3. FALLBACK (Se IA falhar, não existir, ou escolher inválido)
+        # 3. FALLBACK / DRAMA
         if not escolhido:
-            if llm_instance: print(">>> [FALLBACK] IA falhou ou retornou inválido.")
-            # Escolha baseada em 'peso_drama' + pequena aleatoriedade
-            # Ordena por drama decrescente e pega um do top 3
+            # Prioriza eventos com maior peso dramático
             candidatos.sort(key=lambda x: x.get('peso_drama', 50), reverse=True)
+            # Pequena aleatoriedade entre os top 3 para não ficar monótono
             top_3 = candidatos[:3]
             escolhido = random.choice(top_3)
 
         print(f">>> Evento Selecionado: {escolhido['titulo']}")
-        self._atualizar_historico(gamestate, escolhido)
         return escolhido
-
-    def _atualizar_historico(self, gamestate, evento):
-        """Mantém registro para evitar repetições."""
-        if 'ultimos_temas' not in gamestate:
-            gamestate['ultimos_temas'] = []
-        
-        gamestate['ultimos_temas'].append(evento['tema'])
-        
-        # Mantém histórico curto (últimos 4 são suficientes para cooldown)
-        if len(gamestate['ultimos_temas']) > 4:
-            gamestate['ultimos_temas'] = gamestate['ultimos_temas'][-4:]
-
-
-# Função de compatibilidade (Interface usada pelo engine.py)
-def escolher_evento(llm, gamestate, lista_eventos):
-    if not hasattr(escolher_evento, 'director'):
-        escolher_evento.director = DirectorInteligente(lista_eventos)
-    
-    return escolher_evento.director.escolher_evento(llm, gamestate)
