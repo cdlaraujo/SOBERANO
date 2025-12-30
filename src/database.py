@@ -2,34 +2,34 @@
 import json
 import os
 
-def carregar_dados():
+def load_data():
     """
-    Lê os arquivos JSON da pasta 'data' e combina em um dicionário único.
+    Reads JSON files from the 'data' folder and combines them into a single dictionary.
     """
     base_path = 'data'
     
-    def ler(nome_arquivo):
-        caminho = os.path.join(base_path, nome_arquivo)
+    def read(filename):
+        path = os.path.join(base_path, filename)
         try:
-            with open(caminho, 'r', encoding='utf-8') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except FileNotFoundError:
-            print(f"ATENÇÃO: Arquivo não encontrado: {caminho}")
-            return [] if 'config' not in nome_arquivo else {}
+            print(f"WARNING: File not found: {path}")
+            return [] if 'config' not in filename else {}
         except Exception as e:
-            print(f"ERRO CRÍTICO ao carregar {caminho}: {e}")
+            print(f"CRITICAL ERROR loading {path}: {e}")
             return []
 
-    # Monta a estrutura unificada
+    # Assembles the unified structure
     db = {
-        "config": ler('config.json').get('regras', {}),
-        "temas": ler('config.json').get('temas_narrativos', {}),
-        "politicas": ler('politicas.json'),
-        "eventos": ler('eventos.json')
+        "config": read('config.json').get('rules', {}),
+        "themes": read('config.json').get('narrative_themes', {}),
+        "policies": read('policies.json'), # Changed from politicas.json
+        "events": read('events.json')      # Changed from eventos.json
     }
 
-    # Validação simples
-    if not db['politicas']: print(">>> AVISO: Nenhuma política carregada.")
-    if not db['eventos']: print(">>> AVISO: Nenhum evento carregado.")
+    # Simple validation
+    if not db['policies']: print(">>> WARNING: No policies loaded.")
+    if not db['events']: print(">>> WARNING: No events loaded.")
     
     return db

@@ -1,19 +1,20 @@
 {
-  "regras": {
-    "turnos_bloqueio_padrao": 8,
-    "max_eventos_historico": 8
+  "rules": {
+    "default_lock_turns": 8,
+    "max_history_events": 8
   },
-  "temas_narrativos": {
-    "hubris": "A Queda do Orgulho",
-    "desespero": "Tempos de Ruína",
-    "intriga": "Sombras na Corte",
-    "fe": "O Julgamento Divino",
-    "guerra": "O Preço do Sangue",
-    "povo": "O Clamor das Ruas",
-    "cultura": "O Renascimento",
-    "natureza": "A Fúria dos Elementos",
-    "ciencia": "A Era da Razão",
-    "crime": "O Submundo",
-    "game_over": "O Fim da Dinastia"
+  "narrative_themes": {
+    "hubris": "The Fall of Pride",
+    "despair": "Times of Ruin",
+    "intrigue": "Shadows in the Court",
+    "faith": "Divine Judgment",
+    "war": "The Price of Blood",
+    "populace": "The Clamor of the Streets",
+    "culture": "The Renaissance",
+    "nature": "Fury of the Elements",
+    "science": "The Age of Reason",
+    "crime": "The Underworld",
+    "game_over": "The End of the Dynasty",
+    "management": "Affairs of State"
   }
 }

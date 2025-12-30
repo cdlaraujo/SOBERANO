@@ -1,0 +1,338 @@
+[
+    {
+      "id": 1001,
+      "title": "The Midas Curse",
+      "text": "Your coffers overflow while the people scavenge for crumbs. The disparity offends the heavens. A mad prophet has appeared in the central square.",
+      "theme": "hubris",
+      "semantic_trigger": ["midas", "oppressor"],
+      "drama_weight": 100,
+      "options": [
+        {"id": "A", "text": "Execute the Prophet (Tyranny)", "effect": {"stability": 10, "popularity": -20}, "effect_tags": ["SAINT_KILLER"], "response": "The prophet died laughing. The people now worship him as a martyr."},
+        {"id": "B", "text": "Distribute Gold (Humility)", "effect": {"treasury": -40, "popularity": 15}, "effect_tags": ["CHARITABLE"], "response": "The gold is gone. The people applaud, but the nobles call you weak."}
+      ]
+    },
+    {
+      "id": 1002,
+      "title": "The Emperor General",
+      "text": "Your army is so powerful it no longer needs you. The Marshal demands to be named 'Protector of the Realm'. It is a veiled coup.",
+      "theme": "hubris",
+      "semantic_trigger": ["spartan", "weak"],
+      "drama_weight": 90,
+      "options": [
+        {"id": "A", "text": "Accept Tutelage", "effect": {"stability": 20, "treasury": -10}, "effect_tags": ["PUPPET"], "response": "You keep the crown, but have lost the sword."},
+        {"id": "B", "text": "Duel of Honor", "effect": {"military": -30, "stability": -20}, "response": "The Marshal is dead. The army is in chaos."}
+      ]
+    },
+    {
+      "id": 1003,
+      "title": "The Golden Statue",
+      "text": "Sycophants suggest erecting a statue of you in solid gold in the main square.",
+      "theme": "hubris",
+      "semantic_trigger": ["narcissist", "rich"],
+      "drama_weight": 40,
+      "options": [
+        {"id": "A", "text": "Build the Statue", "effect": {"treasury": -20, "popularity": -10}, "effect_tags": ["MEGALOMANIAC"], "response": "It shines under the sun, blinding the beggars."},
+        {"id": "B", "text": "Build a Hospital", "effect": {"treasury": -20, "popularity": 15}, "effect_tags": ["MERCIFUL"], "response": "The people praise your mercy."}
+      ]
+    },
+    {
+      "id": 2001,
+      "title": "The Paradox of Faith",
+      "text": "You claim to be a 'Holy King' (Theocracy), but your coffers are filled with gold stained by usury. The Pope demands an explanation.",
+      "theme": "intrigue",
+      "semantic_trigger": ["fanatic", "miser"],
+      "drama_weight": 95,
+      "options": [
+        {"id": "A", "text": "Bribe the Church", "effect": {"treasury": -30, "stability": 10}, "effect_tags": ["SIMONY", "CORRUPTOR"], "response": "The Pope accepted the bribe. God may not accept it."},
+        {"id": "B", "text": "Confess Sins", "effect": {"popularity": 10, "treasury": -10}, "effect_tags": ["PENITENT"], "response": "Publicly humiliated, but forgiven."}
+      ]
+    },
+    {
+      "id": 2002,
+      "title": "The Satirical Bard",
+      "text": "A popular play ridicules your court. They portray you as a crowned donkey surrounded by wolves.",
+      "theme": "intrigue",
+      "semantic_trigger": ["unpopular", "cultured"],
+      "drama_weight": 60,
+      "options": [
+        {"id": "A", "text": "Censor and Arrest", "effect": {"popularity": -10, "stability": 5}, "effect_tags": ["HUMORLESS"], "response": "The laughter stopped, but the hatred grew."},
+        {"id": "B", "text": "Laugh Along", "effect": {"popularity": 10, "stability": -5}, "effect_tags": ["GOOD_HUMORED"], "response": "You disarmed the criticism with good humor."}
+      ]
+    },
+    {
+      "id": 2003,
+      "title": "The Poisoning",
+      "text": "Your food taster dropped dead during dinner. Someone in the court wants your crown.",
+      "theme": "intrigue",
+      "semantic_trigger": ["tyrant", "vulnerable"],
+      "drama_weight": 85,
+      "options": [
+        {"id": "A", "text": "Purge the Court", "effect": {"stability": -10, "military": 5}, "effect_tags": ["PARANOID"], "response": "Many innocents died to catch one culprit."},
+        {"id": "B", "text": "Discreet Investigation", "effect": {"treasury": -10, "stability": 5}, "effect_tags": ["INVESTIGATOR"], "response": "The culprit was found and quietly exiled."}
+      ]
+    },
+    {
+      "id": 3001,
+      "title": "Silent Famine",
+      "text": "There is no war, no plague. Just incompetent administration. The people die of hunger silently in the alleyways.",
+      "theme": "despair",
+      "semantic_trigger": ["bankrupt"],
+      "drama_weight": 80,
+      "options": [
+        {"id": "A", "text": "Ignore", "effect": {"popularity": -20}, "effect_tags": ["INDIFFERENT", "CRUEL"], "response": "The silence of the dead is deafening."},
+        {"id": "B", "text": "Sell Crown Lands", "effect": {"treasury": 20, "stability": -10}, "effect_tags": ["DESPERATE"], "response": "You feed the people by selling the kingdom's future."}
+      ]
+    },
+    {
+      "id": 3002,
+      "title": "The Last Loan",
+      "text": "The treasury is empty. The Iron Bank offers a loan, but demands control of the royal mines as collateral.",
+      "theme": "despair",
+      "semantic_trigger": ["bankrupt", "vulnerable"],
+      "drama_weight": 90,
+      "options": [
+        {"id": "A", "text": "Accept Terms", "effect": {"treasury": 40, "commerce": -20}, "effect_tags": ["INDEBTED"], "response": "Gold today, misery tomorrow."},
+        {"id": "B", "text": "Confiscate Church Assets", "effect": {"treasury": 30, "popularity": -20, "stability": -10}, "effect_tags": ["LOOTER", "IMPIOUS"], "response": "The priests curse your name, but the bills are paid."}
+      ]
+    },
+    {
+      "id": 4001,
+      "title": "The Neighbor's Offer",
+      "text": "The Iron Kingdom sees your military weakness and offers 'protection' in exchange for tribute.",
+      "theme": "war",
+      "semantic_trigger": ["vulnerable"],
+      "drama_weight": 85,
+      "options": [
+        {"id": "A", "text": "Pay Tribute", "effect": {"treasury": -15, "stability": 5}, "effect_tags": ["VASSAL", "SUBMISSIVE"], "response": "Peace was bought with honor."},
+        {"id": "B", "text": "Refuse and Mobilize", "effect": {"military": 5, "treasury": -10, "stability": -5}, "effect_tags": ["PROUD"], "response": "They will come. Be ready."}
+      ]
+    },
+    {
+      "id": 4002,
+      "title": "Barbarian Invasion",
+      "text": "Hordes from the north have breached the border. They do not want land, they want blood and gold.",
+      "theme": "war",
+      "semantic_trigger": ["rich", "vulnerable"],
+      "drama_weight": 90,
+      "options": [
+        {"id": "A", "text": "Pay Ransom", "effect": {"treasury": -40}, "effect_tags": ["COWARD"], "response": "They left laden with gold. They will return next year."},
+        {"id": "B", "text": "Face them in the Field", "effect": {"military": -20, "popularity": 10}, "effect_tags": ["WARRIOR"], "response": "A pyrrhic victory. The field is stained red."}
+      ]
+    },
+    {
+      "id": 4003,
+      "title": "Mercenary Betrayal",
+      "text": "Your mercenaries have not received their pay. Now they threaten to sack the capital if not paid double.",
+      "theme": "war",
+      "semantic_trigger": ["unstable", "bankrupt"],
+      "drama_weight": 85,
+      "options": [
+        {"id": "A", "text": "Pay Double", "effect": {"treasury": -30}, "effect_tags": ["HOSTAGE"], "response": "They take the gold and laugh at your weakness."},
+        {"id": "B", "text": "Send the Royal Guard", "effect": {"military": -15, "stability": -5}, "effect_tags": ["RELENTLESS"], "response": "Battle in the streets. The traitors were slaughtered."}
+      ]
+    },
+    {
+      "id": 5001,
+      "title": "Banquet of Nobles",
+      "text": "Times of peace and gold. The nobles celebrate your wisdom with an extravagant festival.",
+      "theme": "intrigue",
+      "semantic_trigger": ["midas", "stable"],
+      "drama_weight": 40,
+      "options": [
+        {"id": "A", "text": "Celebrate with them", "effect": {"popularity": -5, "stability": 5}, "effect_tags": ["PARTY_ANIMAL"], "response": "Wine and pheasant. The people watch from the gates."},
+        {"id": "B", "text": "Speech of Austerity", "effect": {"stability": -5, "treasury": 5}, "effect_tags": ["STOIC"], "response": "They found the joke in poor taste and hid their jewelry."}
+      ]
+    },
+    {
+      "id": 6001,
+      "title": "The Black Plague",
+      "text": "Merchant ships brought more than spices. The dry cough turned to black pustules. Death walks the streets.",
+      "theme": "nature",
+      "semantic_trigger": ["merchant", "globalist"],
+      "drama_weight": 95,
+      "options": [
+        {"id": "A", "text": "Total Quarantine", "effect": {"commerce": -30, "popularity": -10, "stability": 10}, "effect_tags": ["PRAGMATIC"], "response": "The economy halted, but the city survived."},
+        {"id": "B", "text": "Prayers and Processions", "effect": {"stability": -10, "popularity": 5}, "effect_tags": ["SUPERSTITIOUS"], "response": "The crowds only spread the disease faster."}
+      ]
+    },
+    {
+      "id": 6002,
+      "title": "Cursed Harvest",
+      "text": "A fungus has destroyed the wheat fields. Winter approaches and the granaries are empty.",
+      "theme": "nature",
+      "semantic_trigger": ["agriculture_low"],
+      "drama_weight": 70,
+      "options": [
+        {"id": "A", "text": "Import Expensive Grain", "effect": {"treasury": -25, "popularity": 10}, "effect_tags": ["PROTECTOR"], "response": "The treasury bleeds, but the people eat."},
+        {"id": "B", "text": "Confiscate from Peasants", "effect": {"popularity": -30, "agriculture": -5}, "effect_tags": ["FAMINE", "THIEF"], "response": "Peasant revolts erupted in the countryside."}
+      ]
+    },
+    {
+      "id": 6003,
+      "title": "The Red Comet",
+      "text": "A trail of blood crosses the night sky. The peasants say it is the end of times.",
+      "theme": "nature",
+      "semantic_trigger": ["superstitious"],
+      "drama_weight": 30,
+      "options": [
+        {"id": "A", "text": "Consult Astronomers", "effect": {"treasury": -5}, "effect_tags": ["RATIONAL"], "response": "It is merely ice and dust, the sages say."},
+        {"id": "B", "text": "Make Sacrifices", "effect": {"popularity": 5, "stability": 5}, "effect_tags": ["PAGAN"], "response": "The people are calmed by goat's blood."}
+      ]
+    },
+    {
+      "id": 7001,
+      "title": "The Heretic Philosopher",
+      "text": "A scholar claims the Earth revolves around the Sun, contradicting the sacred scriptures.",
+      "theme": "culture",
+      "semantic_trigger": ["cultured", "fanatic"],
+      "drama_weight": 60,
+      "options": [
+        {"id": "A", "text": "Burn at the Stake", "effect": {"stability": 5, "military": 2}, "effect_tags": ["OBSCURANTIST"], "response": "Fire purifies, but the truth persists."},
+        {"id": "B", "text": "Fund his Research", "effect": {"treasury": -10, "popularity": 5, "stability": -5}, "effect_tags": ["ENLIGHTENED"], "response": "The Church is furious, but the world advances."}
+      ]
+    },
+    {
+      "id": 7002,
+      "title": "The New Cathedral",
+      "text": "The Bishop wishes to build the largest cathedral in the world for the glory of God (and himself).",
+      "theme": "culture",
+      "semantic_trigger": ["rich", "devout"],
+      "drama_weight": 50,
+      "options": [
+        {"id": "A", "text": "Fund the Works", "effect": {"treasury": -50, "popularity": 10}, "effect_tags": ["BUILDER"], "response": "A marvel of stone that will last a thousand years."},
+        {"id": "B", "text": "Deny Funds", "effect": {"stability": -5, "treasury": 10}, "effect_tags": ["MISER"], "response": "The Bishop preaches about the avarice of kings on Sunday."}
+      ]
+    },
+    {
+      "id": 8001,
+      "title": "Weavers' Revolt",
+      "text": "New machines brought from abroad produce cloth faster, taking jobs from local artisans.",
+      "theme": "populace",
+      "semantic_trigger": ["modern", "guilds"],
+      "drama_weight": 50,
+      "options": [
+        {"id": "A", "text": "Protect Machines", "effect": {"commerce": 10, "popularity": -10}, "effect_tags": ["PROGRESSIVE"], "response": "Progress is inevitable, as is the misery of some."},
+        {"id": "B", "text": "Support Artisans", "effect": {"commerce": -10, "popularity": 10}, "effect_tags": ["LUDDITE", "TRADITIONAL"], "response": "The machines were smashed. Tradition was maintained."}
+      ]
+    },
+    {
+      "id": 8002,
+      "title": "Peasant Uprising",
+      "text": "Fed up with taxes and hunger, the peasants have armed themselves with scythes and march on the castle.",
+      "theme": "populace",
+      "semantic_trigger": ["oppressor", "hunger"],
+      "drama_weight": 95,
+      "options": [
+        {"id": "A", "text": "Negotiate Reforms", "effect": {"popularity": 20, "stability": -10, "treasury": -10}, "effect_tags": ["DIPLOMAT", "WEAK"], "response": "You ceded power to keep your head."},
+        {"id": "B", "text": "Crush without Mercy", "effect": {"popularity": -30, "stability": 20, "military": -5}, "effect_tags": ["BUTCHER", "FEARED"], "response": "The fields were fertilized with corpses."}
+      ]
+    },
+    {
+      "id": 9001,
+      "title": "The Rebel Prince",
+      "text": "Your heir publicly disagrees with your policies. He is young, charismatic, and dangerous.",
+      "theme": "intrigue",
+      "semantic_trigger": ["tyrant", "old"],
+      "drama_weight": 75,
+      "options": [
+        {"id": "A", "text": "Disinherit and Exile", "effect": {"stability": -10, "popularity": -10}, "effect_tags": ["HEIRLESS", "RUTHLESS"], "response": "You kept the power, but lost the future."},
+        {"id": "B", "text": "Give him a Duchy", "effect": {"treasury": -10, "stability": 5}, "effect_tags": ["CONCILIATOR"], "response": "He is busy governing, far from the capital."}
+      ]
+    },
+    {
+      "id": 9002,
+      "title": "The Gunpowder Plot",
+      "text": "Barrels of gunpowder were found beneath Parliament. Discontent nobles planned to blow it all up.",
+      "theme": "intrigue",
+      "semantic_trigger": ["parliamentarism", "unpopular"],
+      "drama_weight": 100,
+      "options": [
+        {"id": "A", "text": "Brutal Public Execution", "effect": {"stability": 10, "popularity": -5}, "effect_tags": ["BLOODTHIRSTY"], "response": "Fear maintains order better than loyalty."},
+        {"id": "B", "text": "Fair Trial", "effect": {"stability": -5, "popularity": 10}, "effect_tags": ["JUST"], "response": "Justice was done, but they became martyrs."}
+      ]
+    },
+    {
+      "id": 10001,
+      "title": "Judicial Error",
+      "text": "Your secret police arrested an innocent man, a war hero loved by the people. The truth has come out.",
+      "theme": "crime",
+      "semantic_trigger": ["paranoid", "secret_police"],
+      "drama_weight": 70,
+      "options": [
+        {"id": "A", "text": "Admit Error", "effect": {"stability": -10, "popularity": 5}, "effect_tags": ["HONEST"], "response": "The secret police lost authority, but the people respect your honesty."},
+        {"id": "B", "text": "Fabricate Evidence", "effect": {"stability": 5, "popularity": -10}, "effect_tags": ["LIAR", "MACHIAVELLIAN"], "response": "He was executed as a traitor. The lie became truth."}
+      ]
+    },
+    {
+      "id": 11001,
+      "title": "Silver Fleet Shipwreck",
+      "text": "Storms destroyed the ships bringing gold from the colonies. The investment is lost.",
+      "theme": "nature",
+      "semantic_trigger": ["imperialist", "unlucky"],
+      "drama_weight": 60,
+      "options": [
+        {"id": "A", "text": "Increase Local Taxes", "effect": {"treasury": 10, "popularity": -15}, "effect_tags": ["EXPLOITER"], "response": "The people pay for the failure of the sea."},
+        {"id": "B", "text": "Accept the Loss", "effect": {"treasury": -20}, "effect_tags": ["RESIGNED"], "response": "The sea gives, the sea takes."}
+      ]
+    },
+    {
+      "id": 12001,
+      "title": "The Miracle Fountain",
+      "text": "Peasants say a fountain in the countryside cures diseases. Pilgrims are blocking the roads.",
+      "theme": "faith",
+      "semantic_trigger": ["superstitious", "devout"],
+      "drama_weight": 40,
+      "options": [
+        {"id": "A", "text": "Tax the Pilgrims", "effect": {"treasury": 15, "popularity": -5}, "effect_tags": ["MERCENARY"], "response": "Faith is a profitable business."},
+        {"id": "B", "text": "Build a Sanctuary", "effect": {"treasury": -10, "popularity": 10}, "effect_tags": ["DEVOUT"], "response": "The place became sacred in your name."}
+      ]
+    },
+    {
+      "id": 13001,
+      "title": "Mass Desertion",
+      "text": "Your soldiers are tired of endless wars and little food. An entire regiment has deserted.",
+      "theme": "war",
+      "semantic_trigger": ["spartan", "poor"],
+      "drama_weight": 80,
+      "options": [
+        {"id": "A", "text": "Decimate (Kill 1 in 10)", "effect": {"military": 5, "popularity": -20}, "effect_tags": ["CRUEL", "DISCIPLINARIAN"], "response": "Discipline was restored by terror."},
+        {"id": "B", "text": "Improve Pay", "effect": {"treasury": -15, "military": 5}, "effect_tags": ["KIND_GENERAL"], "response": "They fight, but the coffers weep."}
+      ]
+    },
+    {
+      "id": 99001,
+      "title": "Day of Audience",
+      "text": "No army marches, no plague ravages. Just a line of peasants with disputes over fences and goats.",
+      "theme": "management",
+      "semantic_trigger": [],
+      "drama_weight": 20,
+      "options": [
+        {"id": "A", "text": "Judge Personally", "effect": {"popularity": 5}, "effect_tags": ["ZEALOUS", "POPULIST"], "response": "The people love a king who listens."},
+        {"id": "B", "text": "Delegate to Scribes", "effect": {"stability": 2}, "effect_tags": ["DISTANT", "BUREAUCRAT"], "response": "Efficient bureaucracy is the foundation of the realm."}
+      ]
+    },
+    {
+      "id": 99002,
+      "title": "The Weather Turns",
+      "text": "A summer storm floods some cellars, but waters the crops.",
+      "theme": "management",
+      "semantic_trigger": [],
+      "drama_weight": 20,
+      "options": [
+        {"id": "A", "text": "Inspect Damages", "effect": {"popularity": 2, "treasury": -2}, "effect_tags": ["CONCERNED"], "response": "Your presence comforts the affected."},
+        {"id": "B", "text": "Stay in Palace", "effect": {}, "effect_tags": ["INDIFFERENT"], "response": "The rain passes, the reign continues."}
+      ]
+    },
+    {
+      "id": 99003,
+      "title": "Minor Festival",
+      "text": "It is Saint Nobody's day. The people dance in the square.",
+      "theme": "management",
+      "semantic_trigger": [],
+      "drama_weight": 20,
+      "options": [
+        {"id": "A", "text": "Sponsor Drinks", "effect": {"treasury": -5, "popularity": 5}, "effect_tags": ["PARTY_ANIMAL", "GENEROUS"], "response": "A small price for smiles."},
+        {"id": "B", "text": "Ignore the Party", "effect": {"treasury": 2}, "effect_tags": ["AUSTERE", "BORING"], "response": "The work continues."}
+      ]
+    }
+]

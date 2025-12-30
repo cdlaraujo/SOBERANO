@@ -1,0 +1,280 @@
+[
+    {
+      "id": "absolutism",
+      "name": "Royal Absolutism",
+      "category": "authority",
+      "description": "I am the State. The Council is merely advisory.",
+      "permanent_tags": ["tyrant", "autocrat"],
+      "aversion": ["democratic", "weak"],
+      "passive_effect": {"stability": 3, "military": 2, "popularity": -2},
+      "activation_cost": {"popularity": -15},
+      "incompatible_with": ["parliamentarism", "merchant_republic"]
+    },
+    {
+      "id": "parliamentarism",
+      "name": "Magna Carta",
+      "category": "authority",
+      "description": "The King reigns, but the Parliament rules.",
+      "permanent_tags": ["constitutionalist", "weak"],
+      "aversion": ["tyrant", "absolutist"],
+      "passive_effect": {"commerce": 5, "stability": -2, "treasury": -2},
+      "activation_cost": {"stability": -20},
+      "incompatible_with": ["absolutism", "theocracy", "martial_law"]
+    },
+    {
+      "id": "martial_law",
+      "name": "Martial Law",
+      "category": "authority",
+      "description": "Generals administer the provinces. Order above all.",
+      "permanent_tags": ["generalissimo", "oppressor"],
+      "aversion": ["libertarian", "pacifist"],
+      "passive_effect": {"stability": 10, "military": 5, "commerce": -10, "popularity": -10},
+      "activation_cost": {"popularity": -20},
+      "incompatible_with": ["parliamentarism", "free_speech", "habeas_corpus"]
+    },
+    {
+      "id": "theocracy",
+      "name": "Holy Kingdom",
+      "category": "religion",
+      "description": "God's Law stands above the Law of Men.",
+      "permanent_tags": ["fanatic", "prophet"],
+      "aversion": ["secular", "heretic"],
+      "passive_effect": {"stability": 5, "commerce": -5},
+      "activation_req": ["inquisition"],
+      "incompatible_with": ["secularism", "parliamentarism", "state_atheism"]
+    },
+    {
+      "id": "secularism",
+      "name": "Secular State",
+      "category": "religion",
+      "description": "The Church tends to souls, the King tends to bodies.",
+      "permanent_tags": ["heretic", "modernist"],
+      "aversion": ["fanatic", "devout"],
+      "passive_effect": {"commerce": 5, "popularity": 2},
+      "incompatible_with": ["theocracy", "inquisition", "holy_war"]
+    },
+    {
+      "id": "holy_war",
+      "name": "Perpetual Crusade",
+      "category": "religion",
+      "description": "Our mission is to purify the world by the sword.",
+      "permanent_tags": ["crusader", "conqueror"],
+      "aversion": ["pacifist", "tolerant"],
+      "passive_effect": {"military": 10, "treasury": -5, "popularity": -5},
+      "activation_req": ["theocracy"],
+      "incompatible_with": ["secularism", "open_diplomacy"]
+    },
+    {
+      "id": "inquisition",
+      "name": "Holy Office",
+      "category": "justice",
+      "description": "Ecclesiastical tribunals to hunt down dissidents.",
+      "permanent_tags": ["inquisitor", "cruel"],
+      "aversion": ["just", "tolerant"],
+      "passive_effect": {"stability": 5, "popularity": -5},
+      "activation_cost": {"treasury": -10},
+      "incompatible_with": ["secularism", "free_speech", "patronage"]
+    },
+    {
+      "id": "habeas_corpus",
+      "name": "Habeas Corpus",
+      "category": "justice",
+      "description": "No free man shall be imprisoned without trial.",
+      "permanent_tags": ["just", "legalist"],
+      "aversion": ["tyrant", "authoritarian"],
+      "passive_effect": {"popularity": 10, "stability": -5},
+      "incompatible_with": ["martial_law", "inquisition", "secret_police", "draconian_code"]
+    },
+    {
+      "id": "secret_police",
+      "name": "Spy Network",
+      "category": "justice",
+      "description": "The walls have ears. Treason dies in the cradle.",
+      "permanent_tags": ["paranoid", "machiavellian"],
+      "aversion": ["honorable", "open"],
+      "passive_effect": {"stability": 15, "treasury": -5, "popularity": -10},
+      "incompatible_with": ["habeas_corpus", "free_speech"]
+    },
+    {
+      "id": "draconian_code",
+      "name": "Draconian Code",
+      "category": "justice",
+      "description": "Severe punishments for petty crimes. Fear maintains order.",
+      "permanent_tags": ["executioner", "authoritarian"],
+      "aversion": ["merciful", "humanist"],
+      "passive_effect": {"stability": 10, "popularity": -15, "commerce": -2},
+      "incompatible_with": ["habeas_corpus", "penal_rehabilitation"]
+    },
+    {
+      "id": "serfdom",
+      "name": "Serfdom",
+      "category": "labor",
+      "description": "The peasant belongs to the land where they were born.",
+      "permanent_tags": ["slaver", "aristocrat"],
+      "aversion": ["liberator", "modern"],
+      "passive_effect": {"agriculture": 8, "commerce": -5, "popularity": -5},
+      "incompatible_with": ["free_labor", "unions"]
+    },
+    {
+      "id": "free_labor",
+      "name": "Free Citizenship",
+      "category": "labor",
+      "description": "Free men produce more, but demand more.",
+      "permanent_tags": ["liberator", "humanist"],
+      "aversion": ["traditional", "slaver"],
+      "passive_effect": {"commerce": 5, "popularity": 5, "agriculture": -3},
+      "incompatible_with": ["serfdom", "war_slavery"]
+    },
+    {
+      "id": "guilds",
+      "name": "Guild Monopoly",
+      "category": "labor",
+      "description": "Organized craftsmen control quality and prices.",
+      "permanent_tags": ["corporatist", "bureaucrat"],
+      "aversion": ["free_market"],
+      "passive_effect": {"treasury": 5, "commerce": -5, "stability": 2},
+      "incompatible_with": ["free_trade"]
+    },
+    {
+      "id": "mercantilism",
+      "name": "Mercantilism",
+      "category": "economy",
+      "description": "Accumulating gold is the sole objective of the State.",
+      "permanent_tags": ["hoarder", "nationalist"],
+      "aversion": ["globalist"],
+      "passive_effect": {"treasury": 8, "commerce": -2},
+      "incompatible_with": ["free_trade"]
+    },
+    {
+      "id": "free_trade",
+      "name": "Free Trade",
+      "category": "economy",
+      "description": "Let the market flow without borders.",
+      "permanent_tags": ["globalist", "merchant"],
+      "aversion": ["isolationist", "nationalist"],
+      "passive_effect": {"commerce": 10, "treasury": 2, "stability": -4},
+      "incompatible_with": ["mercantilism", "guilds", "isolationism"]
+    },
+    {
+      "id": "salt_tax",
+      "name": "Gabelle (Salt Tax)",
+      "category": "economy",
+      "description": "Taxing the essential fills the coffers, but empties the stomachs.",
+      "permanent_tags": ["exploiter", "greedy"],
+      "aversion": ["generous", "just"],
+      "passive_effect": {"treasury": 15, "popularity": -15, "agriculture": -5},
+      "incompatible_with": []
+    },
+    {
+      "id": "professional_army",
+      "name": "Royal Army",
+      "category": "military",
+      "description": "Paid and trained soldiers, loyal only to the Crown.",
+      "permanent_tags": ["centralizer", "disciplined"],
+      "aversion": ["feudal", "disorganized"],
+      "passive_effect": {"military": 15, "treasury": -15, "stability": 5},
+      "activation_cost": {"treasury": -50},
+      "incompatible_with": ["feudal_levies", "mercenaries"]
+    },
+    {
+      "id": "feudal_levies",
+      "name": "Bannermen",
+      "category": "military",
+      "description": "Call upon the lords' peasants in times of war.",
+      "permanent_tags": ["traditional", "feudal"],
+      "aversion": ["modern", "centralizer"],
+      "passive_effect": {"military": -5, "agriculture": -10, "treasury": 5},
+      "incompatible_with": ["professional_army"]
+    },
+    {
+      "id": "imperial_navy",
+      "name": "Grand Armada",
+      "category": "military",
+      "description": "He who rules the seas, rules the world.",
+      "permanent_tags": ["imperialist", "visionary"],
+      "aversion": ["isolationist"],
+      "passive_effect": {"military": 5, "commerce": 10, "treasury": -10},
+      "incompatible_with": ["isolationism"]
+    },
+    {
+      "id": "mercenaries",
+      "name": "Free Companies",
+      "category": "military",
+      "description": "Warriors for hire. Strong, but loyal only to gold.",
+      "permanent_tags": ["pragmatic", "opportunist"],
+      "aversion": ["honorable", "patriot"],
+      "passive_effect": {"military": 10, "treasury": -20, "stability": -5},
+      "incompatible_with": ["professional_army"]
+    },
+    {
+      "id": "patronage",
+      "name": "Royal Patronage",
+      "category": "culture",
+      "description": "Finance painters, philosophers, and bards.",
+      "permanent_tags": ["cultured", "renaissance"],
+      "aversion": ["barbarian", "miser"],
+      "passive_effect": {"popularity": 10, "treasury": -10},
+      "incompatible_with": ["inquisition", "austerity"]
+    },
+    {
+      "id": "censorship",
+      "name": "Index Librorum",
+      "category": "culture",
+      "description": "Burn dangerous books before ideas spread.",
+      "permanent_tags": ["obscurantist", "censor"],
+      "aversion": ["enlightened", "free"],
+      "passive_effect": {"stability": 5, "commerce": -5},
+      "incompatible_with": ["free_speech", "patronage"]
+    },
+    {
+      "id": "isolationism",
+      "name": "Iron Wall",
+      "category": "diplomacy",
+      "description": "Close the borders. The outside world is poison.",
+      "permanent_tags": ["xenophobic", "hermit"],
+      "aversion": ["diplomat", "cosmopolitan"],
+      "passive_effect": {"stability": 10, "commerce": -20, "popularity": -5},
+      "incompatible_with": ["free_trade", "imperial_navy", "marriage_alliances"]
+    },
+    {
+      "id": "marriage_alliances",
+      "name": "Blood Diplomacy",
+      "category": "diplomacy",
+      "description": "Marry off sons and daughters to prevent wars.",
+      "permanent_tags": ["diplomat", "pacifist"],
+      "aversion": ["conqueror", "isolationist"],
+      "passive_effect": {"stability": 5, "military": -5, "popularity": 2},
+      "incompatible_with": ["isolationism"]
+    },
+    {
+      "id": "religious_education",
+      "name": "Monastic Schools",
+      "category": "education",
+      "description": "Reading serves only to study the Scriptures.",
+      "permanent_tags": ["scholastic", "devout"],
+      "aversion": ["enlightened", "progressive"],
+      "passive_effect": {"stability": 5, "commerce": -2},
+      "incompatible_with": ["public_education"]
+    },
+    {
+      "id": "public_education",
+      "name": "Royal Universities",
+      "category": "education",
+      "description": "Knowledge to train bureaucrats and engineers.",
+      "permanent_tags": ["enlightened", "scientist"],
+      "aversion": ["obscurantist", "traditional"],
+      "passive_effect": {"treasury": -15, "commerce": 10, "popularity": 5},
+      "incompatible_with": ["religious_education", "censorship"]
+    },
+    {
+      "id": "colonization",
+      "name": "Colonial Expansion",
+      "category": "exploration",
+      "description": "Seek new lands beyond the sea to exploit resources.",
+      "permanent_tags": ["imperialist", "explorer"],
+      "aversion": ["isolationist"],
+      "passive_effect": {"treasury": 10, "commerce": 10, "military": -5},
+      "activation_req": ["imperial_navy"],
+      "incompatible_with": ["isolationism"]
+    }
+]
