@@ -1,5 +1,4 @@
 # src/rules.py
-
 class RuleEngine:
     """
     Camada 1: Filtros Determinísticos (Hard Constraints).
@@ -40,8 +39,10 @@ class RuleEngine:
             # Se o evento exige tags específicas (ex: precisa ser 'tirano')
             reqs = ev.get('gatilho_semantico', [])
             if reqs:
-                # Junta tags atuais do rei + tags do estado (rico, pobre, etc)
-                tags_atuais = RuleEngine._get_tags_estado(s) + gamestate.get('tags_reputacao', [])
+                # CORREÇÃO ITEM 1:
+                # Agora usa diretamente as tags já calculadas pela engine.py
+                # Isso garante que Regras e UI vejam a mesma realidade.
+                tags_atuais = gamestate.get('tags_estado', []) + gamestate.get('tags_reputacao', [])
                 
                 # Se não tem NENHUMA das tags exigidas
                 if not any(r in tags_atuais for r in reqs):
@@ -53,19 +54,3 @@ class RuleEngine:
             viaveis.append(ev)
         
         return viaveis
-
-    @staticmethod
-    def _get_tags_estado(stats):
-        """Gera tags baseadas nos números atuais."""
-        tags = []
-        if stats['tesouro'] > 75: tags.append('midas') # Ajustado para bater com eventos.json
-        if stats['tesouro'] > 75: tags.append('rico')
-        if stats['tesouro'] < 25: tags.append('pobre')
-        if stats['tesouro'] < 10: tags.append('falido')
-        
-        if stats['militar'] > 75: tags.append('espartano')
-        if stats['militar'] < 25: tags.append('vulneravel')
-        
-        if stats['popularidade'] < 25: tags.append('opressor')
-        
-        return tags
