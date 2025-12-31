@@ -17,7 +17,7 @@
       "description": "The King reigns, but the Parliament rules.",
       "permanent_tags": ["constitutionalist", "weak"],
       "aversion": ["tyrant", "absolutist"],
-      "passive_effect": {"commerce": 5, "stability": -2, "treasury": -2},
+      "passive_effect": {"stability": -2, "treasury": -2},
       "activation_cost": {"stability": -20},
       "incompatible_with": ["absolutism", "theocracy", "martial_law"]
     },
@@ -28,7 +28,7 @@
       "description": "Generals administer the provinces. Order above all.",
       "permanent_tags": ["generalissimo", "oppressor"],
       "aversion": ["libertarian", "pacifist"],
-      "passive_effect": {"stability": 10, "military": 5, "commerce": -10, "popularity": -10},
+      "passive_effect": {"stability": 10, "military": 5, "popularity": -10},
       "activation_cost": {"popularity": -20},
       "incompatible_with": ["parliamentarism", "free_speech", "habeas_corpus"]
     },
@@ -39,7 +39,7 @@
       "description": "God's Law stands above the Law of Men.",
       "permanent_tags": ["fanatic", "prophet"],
       "aversion": ["secular", "heretic"],
-      "passive_effect": {"stability": 5, "commerce": -5},
+      "passive_effect": {"stability": 5},
       "activation_req": ["inquisition"],
       "incompatible_with": ["secularism", "parliamentarism", "state_atheism"]
     },
@@ -50,7 +50,7 @@
       "description": "The Church tends to souls, the King tends to bodies.",
       "permanent_tags": ["heretic", "modernist"],
       "aversion": ["fanatic", "devout"],
-      "passive_effect": {"commerce": 5, "popularity": 2},
+      "passive_effect": {"popularity": 2},
       "incompatible_with": ["theocracy", "inquisition", "holy_war"]
     },
     {
@@ -102,7 +102,7 @@
       "description": "Severe punishments for petty crimes. Fear maintains order.",
       "permanent_tags": ["executioner", "authoritarian"],
       "aversion": ["merciful", "humanist"],
-      "passive_effect": {"stability": 10, "popularity": -15, "commerce": -2},
+      "passive_effect": {"stability": 10, "popularity": -15},
       "incompatible_with": ["habeas_corpus", "penal_rehabilitation"]
     },
     {
@@ -112,7 +112,7 @@
       "description": "The peasant belongs to the land where they were born.",
       "permanent_tags": ["slaver", "aristocrat"],
       "aversion": ["liberator", "modern"],
-      "passive_effect": {"agriculture": 8, "commerce": -5, "popularity": -5},
+      "passive_effect": {"popularity": -5},
       "incompatible_with": ["free_labor", "unions"]
     },
     {
@@ -122,7 +122,7 @@
       "description": "Free men produce more, but demand more.",
       "permanent_tags": ["liberator", "humanist"],
       "aversion": ["traditional", "slaver"],
-      "passive_effect": {"commerce": 5, "popularity": 5, "agriculture": -3},
+      "passive_effect": {"popularity": 5},
       "incompatible_with": ["serfdom", "war_slavery"]
     },
     {
@@ -132,7 +132,7 @@
       "description": "Organized craftsmen control quality and prices.",
       "permanent_tags": ["corporatist", "bureaucrat"],
       "aversion": ["free_market"],
-      "passive_effect": {"treasury": 5, "commerce": -5, "stability": 2},
+      "passive_effect": {"treasury": 5, "stability": 2},
       "incompatible_with": ["free_trade"]
     },
     {
@@ -142,7 +142,7 @@
       "description": "Accumulating gold is the sole objective of the State.",
       "permanent_tags": ["hoarder", "nationalist"],
       "aversion": ["globalist"],
-      "passive_effect": {"treasury": 8, "commerce": -2},
+      "passive_effect": {"treasury": 8},
       "incompatible_with": ["free_trade"]
     },
     {
@@ -152,7 +152,7 @@
       "description": "Let the market flow without borders.",
       "permanent_tags": ["globalist", "merchant"],
       "aversion": ["isolationist", "nationalist"],
-      "passive_effect": {"commerce": 10, "treasury": 2, "stability": -4},
+      "passive_effect": {"treasury": 2, "stability": -4},
       "incompatible_with": ["mercantilism", "guilds", "isolationism"]
     },
     {
@@ -162,7 +162,7 @@
       "description": "Taxing the essential fills the coffers, but empties the stomachs.",
       "permanent_tags": ["exploiter", "greedy"],
       "aversion": ["generous", "just"],
-      "passive_effect": {"treasury": 15, "popularity": -15, "agriculture": -5},
+      "passive_effect": {"treasury": 15, "popularity": -15},
       "incompatible_with": []
     },
     {
@@ -183,7 +183,7 @@
       "description": "Call upon the lords' peasants in times of war.",
       "permanent_tags": ["traditional", "feudal"],
       "aversion": ["modern", "centralizer"],
-      "passive_effect": {"military": -5, "agriculture": -10, "treasury": 5},
+      "passive_effect": {"military": -5, "treasury": 5},
       "incompatible_with": ["professional_army"]
     },
     {
@@ -193,7 +193,7 @@
       "description": "He who rules the seas, rules the world.",
       "permanent_tags": ["imperialist", "visionary"],
       "aversion": ["isolationist"],
-      "passive_effect": {"military": 5, "commerce": 10, "treasury": -10},
+      "passive_effect": {"military": 5, "treasury": -10},
       "incompatible_with": ["isolationism"]
     },
     {
@@ -223,7 +223,7 @@
       "description": "Burn dangerous books before ideas spread.",
       "permanent_tags": ["obscurantist", "censor"],
       "aversion": ["enlightened", "free"],
-      "passive_effect": {"stability": 5, "commerce": -5},
+      "passive_effect": {"stability": 5},
       "incompatible_with": ["free_speech", "patronage"]
     },
     {
@@ -233,7 +233,7 @@
       "description": "Close the borders. The outside world is poison.",
       "permanent_tags": ["xenophobic", "hermit"],
       "aversion": ["diplomat", "cosmopolitan"],
-      "passive_effect": {"stability": 10, "commerce": -20, "popularity": -5},
+      "passive_effect": {"stability": 10, "popularity": -5},
       "incompatible_with": ["free_trade", "imperial_navy", "marriage_alliances"]
     },
     {
@@ -253,7 +253,7 @@
       "description": "Reading serves only to study the Scriptures.",
       "permanent_tags": ["scholastic", "devout"],
       "aversion": ["enlightened", "progressive"],
-      "passive_effect": {"stability": 5, "commerce": -2},
+      "passive_effect": {"stability": 5},
       "incompatible_with": ["public_education"]
     },
     {
@@ -263,7 +263,7 @@
       "description": "Knowledge to train bureaucrats and engineers.",
       "permanent_tags": ["enlightened", "scientist"],
       "aversion": ["obscurantist", "traditional"],
-      "passive_effect": {"treasury": -15, "commerce": 10, "popularity": 5},
+      "passive_effect": {"treasury": -15, "popularity": 5},
       "incompatible_with": ["religious_education", "censorship"]
     },
     {
@@ -273,7 +273,7 @@
       "description": "Seek new lands beyond the sea to exploit resources.",
       "permanent_tags": ["imperialist", "explorer"],
       "aversion": ["isolationist"],
-      "passive_effect": {"treasury": 10, "commerce": 10, "military": -5},
+      "passive_effect": {"treasury": 10, "military": -5},
       "activation_req": ["imperial_navy"],
       "incompatible_with": ["isolationism"]
     }
