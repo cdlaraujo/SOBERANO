@@ -169,10 +169,15 @@
     }
 
     function render() {
-        // Stats
+        // Stats - Now only 4 stats
         const sb = document.getElementById('stats-container');
         sb.innerHTML = '';
-        for(let [k,v] of Object.entries(state.stats)) {
+        
+        // Define the 4 core stats in order
+        const coreStats = ['treasury', 'military', 'popularity', 'stability'];
+        
+        for(let k of coreStats) {
+            let v = state.stats[k];
             // Capitalize key
             let label = k.charAt(0).toUpperCase() + k.slice(1);
             let cl = v < 20 ? 'danger' : (v > 80 ? 'hubris' : '');

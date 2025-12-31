@@ -91,7 +91,7 @@
       "semantic_trigger": ["bankrupt", "vulnerable"],
       "drama_weight": 90,
       "options": [
-        {"id": "A", "text": "Accept Terms", "effect": {"treasury": 40, "commerce": -20}, "effect_tags": ["INDEBTED"], "response": "Gold today, misery tomorrow."},
+        {"id": "A", "text": "Accept Terms", "effect": {"treasury": 40}, "effect_tags": ["INDEBTED"], "response": "Gold today, misery tomorrow."},
         {"id": "B", "text": "Confiscate Church Assets", "effect": {"treasury": 30, "popularity": -20, "stability": -10}, "effect_tags": ["LOOTER", "IMPIOUS"], "response": "The priests curse your name, but the bills are paid."}
       ]
     },
@@ -151,7 +151,7 @@
       "semantic_trigger": ["merchant", "globalist"],
       "drama_weight": 95,
       "options": [
-        {"id": "A", "text": "Total Quarantine", "effect": {"commerce": -30, "popularity": -10, "stability": 10}, "effect_tags": ["PRAGMATIC"], "response": "The economy halted, but the city survived."},
+        {"id": "A", "text": "Total Quarantine", "effect": {"popularity": -10, "stability": 10}, "effect_tags": ["PRAGMATIC"], "response": "The economy halted, but the city survived."},
         {"id": "B", "text": "Prayers and Processions", "effect": {"stability": -10, "popularity": 5}, "effect_tags": ["SUPERSTITIOUS"], "response": "The crowds only spread the disease faster."}
       ]
     },
@@ -164,7 +164,7 @@
       "drama_weight": 70,
       "options": [
         {"id": "A", "text": "Import Expensive Grain", "effect": {"treasury": -25, "popularity": 10}, "effect_tags": ["PROTECTOR"], "response": "The treasury bleeds, but the people eat."},
-        {"id": "B", "text": "Confiscate from Peasants", "effect": {"popularity": -30, "agriculture": -5}, "effect_tags": ["FAMINE", "THIEF"], "response": "Peasant revolts erupted in the countryside."}
+        {"id": "B", "text": "Confiscate from Peasants", "effect": {"popularity": -30}, "effect_tags": ["FAMINE", "THIEF"], "response": "Peasant revolts erupted in the countryside."}
       ]
     },
     {
@@ -211,8 +211,8 @@
       "semantic_trigger": ["modern", "guilds"],
       "drama_weight": 50,
       "options": [
-        {"id": "A", "text": "Protect Machines", "effect": {"commerce": 10, "popularity": -10}, "effect_tags": ["PROGRESSIVE"], "response": "Progress is inevitable, as is the misery of some."},
-        {"id": "B", "text": "Support Artisans", "effect": {"commerce": -10, "popularity": 10}, "effect_tags": ["LUDDITE", "TRADITIONAL"], "response": "The machines were smashed. Tradition was maintained."}
+        {"id": "A", "text": "Protect Machines", "effect": {"popularity": -10}, "effect_tags": ["PROGRESSIVE"], "response": "Progress is inevitable, as is the misery of some."},
+        {"id": "B", "text": "Support Artisans", "effect": {"popularity": 10}, "effect_tags": ["LUDDITE", "TRADITIONAL"], "response": "The machines were smashed. Tradition was maintained."}
       ]
     },
     {
