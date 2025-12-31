@@ -1,12 +1,9 @@
 # main.py
 
 import uuid
-import webbrowser
-from threading import Timer
 from flask import Flask, jsonify, request, render_template, make_response
 from src.database import load_data
-from src.director import initialize_llm
-from src.director_integration import EnhancedIntelligentDirector
+from src.director import initialize_llm, IntelligentDirector
 from src.engine import GameEngine
 
 app = Flask(__name__)
@@ -18,8 +15,8 @@ DB = load_data()
 # Load AI once (heavy)
 LLM = initialize_llm()
 
-# Connect the "Brain" (LLM) to the game
-DIRECTOR = EnhancedIntelligentDirector(DB['events'])
+# REPAIR 3: Instantiate Director Globally
+DIRECTOR = IntelligentDirector(DB['events'])
 
 print(">>> SOVEREIGN: Ready.")
 
@@ -33,10 +30,6 @@ def get_game():
         GAMES[new_id] = GameEngine(DB)
         return GAMES[new_id], new_id
     return GAMES[user_id], user_id
-
-def open_browser():
-    """Opens the game in the default browser after a short delay."""
-    webbrowser.open_new("http://127.0.0.1:5000")
 
 # --- ROUTES ---
 
@@ -74,8 +67,4 @@ def toggle_policy():
     return jsonify(msg), status
 
 if __name__ == '__main__':
-    # Schedule browser to open in 1.5 seconds (gives server time to start)
-    Timer(1.5, open_browser).start()
-    
-    # Debug=False prevents the console color crash on Windows
-    app.run(debug=False, port=5000, threaded=True)
+    app.run(debug=True, port=5000, threaded=True)
